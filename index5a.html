@@ -1,0 +1,1228 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for SEO and social sharing -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Krishnanjan Sil, a theoretical physicist specializing in quantum mechanics, cosmology, and particle physics.">
+    <meta name="keywords" content="theoretical physics, quantum mechanics, cosmology, particle physics, Krishnanjan Sil">
+    <meta name="author" content="Krishnanjan Sil">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph for social media -->
+    <meta property="og:title" content="Krishnanjan Sil - Theoretical Physicist">
+    <meta property="og:description" content="Explore the research, projects, and insights of Krishnanjan Sil, a theoretical physicist passionate about quantum mechanics and cosmology.">
+    <meta property="og:image" content="https://krishnanjan.github.io/assets/og-image.webp">
+    <meta property="og:url" content="https://krishnanjan.github.io">
+    <meta property="og:type" content="website">
+    <!-- Twitter Card for X sharing -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Krishnanjan Sil - Theoretical Physicist">
+    <meta name="twitter:description" content="Portfolio of a physicist exploring quantum mechanics and cosmology.">
+    <meta name="twitter:image" content="https://krishnanjan.github.io/assets/og-image.webp">
+    <!-- Page title and favicon -->
+    <title>Krishnanjan Sil - Theoretical Physicist</title>
+    <link rel="icon" type="image/webp" href="assets/favicon.webp" loading="lazy">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Slab:wght@400;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- AOS for scroll animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- External scripts for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.30.0/plotly.min.js" onerror="console.warn('Plotly.js failed to load')"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.warn('Particle.js failed to load')"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" onerror="console.warn('AOS failed to load')"></script>
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary: #5a8cff; /* Main accent color */
+            --secondary: #a3c6ff; /* Lighter accent for hover/focus */
+            --dark-bg: #0a0a23; /* Dark mode background */
+            --light-bg: linear-gradient(135deg, #f4f7ff 0%, #e6efff 100%); /* Light mode background */
+            --high-contrast-bg: #000; /* High contrast background */
+            --high-contrast-text: #fff; /* High contrast text */
+            --radius: 0.75rem; /* Border radius */
+            --shadow: 0 6px 16px rgba(0,0,255,0.2); /* Box shadow */
+            --spacing: 1.5rem; /* Spacing unit */
+            --text-light: #f0f4ff; /* Light mode text */
+            --text-dark: #1a2026; /* Dark mode text */
+            --transition: all 0.3s ease; /* Transition for animations */
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
+        }
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.7;
+            overflow-x: hidden;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            position: relative;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            loading: lazy; /* Lazy-load images for performance */
+        }
+
+        /* Font Size Classes for Accessibility */
+        body.font-small { font-size: 14px; }
+        body.font-medium { font-size: 16px; }
+        body.font-large { font-size: 18px; }
+
+        /* High Contrast Mode */
+        body.high-contrast {
+            background: var(--high-contrast-bg);
+            color: var(--high-contrast-text);
+        }
+        body.high-contrast .item, body.high-contrast section, body.high-contrast nav, body.high-contrast footer {
+            background: #111;
+            border: 1px solid #fff;
+        }
+        body.high-contrast a, body.high-contrast h2, body.high-contrast h3, body.high-contrast p, body.high-contrast li {
+            color: var(--high-contrast-text);
+        }
+
+        /* Theme Modes */
+        body.light-mode {
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+        body.light-mode header {
+            background: linear-gradient(180deg, rgba(70,130,255,0.9), transparent);
+            animation: gradientPulseLight 10s infinite ease-in-out; /* Light mode animation */
+        }
+        body.light-mode nav { background: linear-gradient(90deg, #4a7bff, var(--primary)); }
+        body.light-mode .item { background: rgba(255,255,255,0.95); }
+        body.light-mode footer { background: linear-gradient(90deg, #4a7bff, var(--primary)); }
+        body.light-mode h2, body.light-mode h3, body.light-mode p, body.light-mode li { color: var(--text-dark); }
+        body.light-mode .section-toggle { background: #e8f1ff; color: #002d72; }
+        body.light-mode a { color: #004aad; }
+        body.light-mode a:hover, body.light-mode a:focus { color: #007bff; }
+        body.light-mode #particles-js { opacity: 0.6; }
+        body.light-mode .viewer-count, body.light-mode .feedback-widget { background: rgba(255,255,255,0.98); color: #002d72; }
+        body.light-mode .feedback-widget p { color: #002d72; }
+        body.light-mode .search-bar input { background: #fff; color: #002d72; }
+
+        body.dark-mode header {
+            background: linear-gradient(180deg, rgba(0,0,60,0.9), transparent);
+            animation: gradientPulseDark 10s infinite ease-in-out; /* Dark mode animation */
+        }
+        body.dark-mode nav { background: linear-gradient(90deg, #1c2526, #2e3a4a); }
+        body.dark-mode .item { background: rgba(255,255,255,0.12); }
+        body.dark-mode .section-toggle { background: rgba(255,255,255,0.15); color: var(--primary); }
+        body.dark-mode a { color: var(--primary); }
+        body.dark-mode a:hover, body.dark-mode a:focus { color: var(--secondary); }
+        body.dark-mode .viewer-count, body.dark-mode .feedback-widget { background: rgba(0,0,60,0.95); color: var(--primary); }
+
+        /* Animations for Themes */
+        @keyframes gradientPulseLight {
+            0%, 100% { background: linear-gradient(180deg, rgba(70,130,255,0.9), transparent); }
+            50% { background: linear-gradient(180deg, rgba(100,150,255,0.95), transparent); }
+        }
+        @keyframes gradientPulseDark {
+            0%, 100% { background: linear-gradient(180deg, rgba(0,0,60,0.9), transparent); }
+            50% { background: linear-gradient(180deg, rgba(30,30,90,0.95), transparent); }
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: transparent;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            padding: 5rem 1rem;
+            position: relative;
+            animation: fadeIn 1.5s ease-in;
+            z-index: 1;
+            min-height: 40vh;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0.3;
+            z-index: -1;
+        }
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(0,0,255,0.6);
+            margin-bottom: 0.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            animation: glow 4s infinite ease-in-out;
+        }
+        header p#typed-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.3rem;
+            color: var(--primary);
+            min-height: 2rem;
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 15px rgba(0,0,255,0.6); }
+            50% { text-shadow: 0 0 25px rgba(0,82,204,0.8); }
+        }
+
+        /* Navigation Styling */
+        nav {
+            background: linear-gradient(90deg, #1c2526, #2e3a4a);
+            text-align: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            animation: slideIn 0.5s ease-in;
+            padding: var(--spacing);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            transition: transform 0.3s ease;
+        }
+        nav.hidden { transform: translateY(-100%); }
+        nav a {
+            color: var(--primary);
+            margin: 0 1.2rem;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -3px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+        nav a:hover::after, nav a:focus::after { width: 100%; }
+        nav a:hover, nav a:focus {
+            color: #fff;
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Hamburger Menu for Mobile */
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1100;
+        }
+        nav.active { transform: translateY(0); }
+
+        /* Controls Styling */
+        .controls {
+            position: fixed;
+            top: 0.8rem;
+            right: 0.8rem;
+            display: flex;
+            gap: 0.8rem;
+            z-index: 1000;
+            flex-wrap: wrap;
+        }
+        .language-selector select,
+        .font-size-selector select,
+        .contrast-toggle select {
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.25);
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .language-selector select:focus,
+        .font-size-selector select:focus,
+        .contrast-toggle select:focus {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0,82,204,0.5);
+            outline: 3px solid var(--primary);
+        }
+        .theme-toggle {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+        .theme-toggle:hover, .theme-toggle:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .viewer-count {
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 1.2rem;
+            right: 1.2rem;
+            background: var(--primary);
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 50%;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            display: none;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        .back-to-top.show { display: block; }
+        .back-to-top:hover, .back-to-top:focus {
+            transform: translateY(-5px) scale(1.1);
+            outline: 3px solid var(--primary);
+        }
+
+        /* Feedback Widget */
+        .feedback-widget {
+            position: fixed;
+            bottom: 1.2rem;
+            left: 1.2rem;
+            background: rgba(255,255,255,0.15);
+            padding: 1rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+        .feedback-widget p {
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+        }
+        .feedback-widget button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: fixed;
+            top: 0.8rem;
+            left: 0.8rem;
+            z-index: 1000;
+        }
+        .search-bar input {
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.25);
+            color: var(--text-light);
+            width: 180px;
+            transition: width 0.3s;
+        }
+        .search-bar input:focus { width: 220px; }
+        .search-results {
+            position: absolute;
+            top: 2.5rem;
+            left: 0;
+            background: rgba(255,255,255,0.9);
+            color: var(--text-dark);
+            border-radius: var(--radius);
+            padding: 0.8rem;
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+        .search-results.active { display: block; }
+        .search-results li {
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .search-results li:hover, .search-results li:focus {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Social Share */
+        .social-share {
+            position: fixed;
+            bottom: 1.2rem;
+            right: 4rem;
+            display: flex;
+            gap: 0.6rem;
+        }
+        .social-share a { padding: 0.6rem; border-radius: 50%; }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 5rem auto 2rem; /* Increased top margin to avoid nav overlap */
+            padding: 0 var(--spacing);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 4rem;
+            background: rgba(255,255,255,0.08);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            opacity: 0;
+        }
+        section.visible { opacity: 1; }
+        section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 18px rgba(0,0,255,0.3);
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 3px;
+            background: var(--primary);
+            bottom: -3px;
+            left: 0;
+            transition: width 0.3s;
+        }
+        h2:hover::after { width: 120px; }
+        h3 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+        p, li {
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Subsection Toggles */
+        .section-toggle {
+            padding: 0.6rem 1.2rem;
+            background: rgba(255,255,255,0.15);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+        .section-toggle.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        .section-toggle:hover, .section-toggle:focus {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+
+        /* Grid Layouts */
+        .papers, .research-experience, .hobbies, .my-life, .insights {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .item {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,82,204,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        .item:hover::before { opacity: 1; }
+        .item:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+        .item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .item a:hover, .item a:focus {
+            color: var(--secondary);
+            text-decoration: underline;
+            outline: 3px solid var(--primary);
+        }
+
+        /* Timeline */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 3px;
+            height: 100%;
+            background: var(--primary);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            margin: 1rem 0;
+            width: 50%;
+            padding: 1rem;
+        }
+        .timeline-item:nth-child(odd) { left: 0; text-align: right; }
+        .timeline-item:nth-child(even) { left: 50%; text-align: left; }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+        .timeline-item:nth-child(odd)::before { right: -6px; }
+        .timeline-item:nth-child(even)::before { left: -6px; }
+        .timeline-item:hover { transform: scale(1.03); box-shadow: var(--shadow); }
+
+        /* Lightbox and CV Modal */
+        .lightbox, .cv-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active, .cv-modal.active { display: flex; }
+        .lightbox img { max-width: 85%; max-height: 85%; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .cv-modal-content { background: #fff; padding: 1.5rem; border-radius: var(--radius); max-width: 85%; max-height: 85%; overflow: auto; }
+        .lightbox-close, .cv-modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .lightbox-close:hover, .lightbox-close:focus, .cv-modal-close:hover, .cv-modal-close:focus {
+            transform: scale(1.2);
+            outline: 3px solid var(--primary);
+        }
+
+        /* Form Styling */
+        .contact-form-container {
+            display: grid;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 1.5rem auto;
+        }
+        input, textarea {
+            padding: 0.8rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.25);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+        input:focus, textarea:focus {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0,82,204,0.5);
+            outline: 3px solid var(--primary);
+        }
+        textarea { min-height: 150px; resize: vertical; }
+        label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        body.light-mode label { color: #002d72; }
+        button {
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+        button:hover, button:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .cv-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+        .cv-button:hover, .cv-button:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+
+        /* Footer Styling */
+        footer {
+            background: linear-gradient(90deg, #1c2526, #2e3a4a);
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--primary);
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at bottom, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        footer a:hover, footer a:focus {
+            color: var(--secondary);
+            text-decoration: underline;
+            outline: 3px solid var(--primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Mobile-First Responsive Design */
+        @media (max-width: 768px) {
+            header { padding: 3rem 0.8rem; }
+            header h1 { font-size: 2.2rem; }
+            nav {
+                display: none;
+                flex-direction: column;
+                background: rgba(28,37,38,0.95);
+                padding: 1rem;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                width: 250px;
+                transform: translateX(-100%);
+            }
+            nav.active {
+                display: flex;
+                transform: translateX(0);
+            }
+            nav a { margin: 0.8rem 0; font-size: 1.1rem; }
+            .hamburger { display: block; }
+            .papers, .research-experience, .hobbies, .my-life, .insights { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; gap: 0.6rem; }
+            .timeline::before { left: 12px; }
+            .timeline-item { width: 100%; left: 0; text-align: left; padding-left: 25px; }
+            .timeline-item::before { left: 6px; }
+            .search-bar input { width: 140px; }
+            .search-bar input:focus { width: 180px; }
+            .social-share { right: 1.2rem; }
+            #particles-js { display: none; }
+            .container { margin-top: 4rem; }
+        }
+        @media (max-width: 480px) {
+            header { padding: 2rem 0.5rem; }
+            header h1 { font-size: 1.8rem; }
+            .container { padding: 0 0.5rem; }
+            .search-bar, .feedback-widget { left: 0.5rem; }
+            .controls { right: 0.5rem; }
+            h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body class="dark-mode font-medium">
+    <!-- Particle background container -->
+    <div id="particles-js" role="presentation" aria-hidden="true"></div>
+    <!-- Scroll progress bar -->
+    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <!-- Search bar for content search -->
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search content..." aria-label="Search website content">
+        <ul class="search-results" id="search-results" aria-live="polite"></ul>
+    </div>
+    <!-- Controls for language, font size, contrast, theme, and visitor count -->
+    <div class="controls">
+        <div class="language-selector">
+            <select id="language" aria-label="Select language">
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+                <option value="it">Italiano</option>
+            </select>
+        </div>
+        <div class="font-size-selector">
+            <select id="font-size" aria-label="Select font size">
+                <option value="small">Small</option>
+                <option value="medium" selected>Medium</option>
+                <option value="large">Large</option>
+            </select>
+        </div>
+        <div class="contrast-toggle">
+            <select id="contrast" aria-label="Select contrast mode">
+                <option value="default">Default Contrast</option>
+                <option value="high">High Contrast</option>
+            </select>
+        </div>
+        <button class="theme-toggle" aria-label="Toggle light/dark theme">Light Mode</button>
+        <div class="viewer-count" aria-live="polite">Visitors: <span id="visitor-count">0</span></div>
+    </div>
+    <!-- Feedback widget for user input -->
+    <div class="feedback-widget" role="region" aria-label="Feedback widget">
+        <p id="feedback-text">Was this page helpful?</p>
+        <button onclick="submitFeedback('yes')" aria-label="Yes, page is helpful">Yes</button>
+        <button onclick="submitFeedback('no')" aria-label="No, page is not helpful">No</button>
+    </div>
+    <!-- Back to top button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">↑ Top</a>
+    <!-- Social share links -->
+    <div class="social-share">
+        <a href="https://x.com/share?url=https://krishnanjan.github.io&text=Check out Krishnanjan Sil's portfolio!" target="_blank" rel="noopener" aria-label="Share on X"><img src="https://img.shields.io/badge/X-Share-000000?style=flat-square&logo=x" alt="Share on X"></a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://krishnanjan.github.io" target="_blank" rel="noopener" aria-label="Share on LinkedIn"><img src="https://img.shields.io/badge/LinkedIn-Share-0A66C2?style=flat-square&logo=linkedin" alt="Share on LinkedIn"></a>
+        <a href="https://reddit.com/submit?url=https://krishnanjan.github.io&title=Krishnanjan Sil's Physics Portfolio" target="_blank" rel="noopener" aria-label="Share on Reddit"><img src="https://img.shields.io/badge/Reddit-Share-FF4500?style=flat-square&logo=reddit" alt="Share on Reddit"></a>
+        <a href="mailto:?subject=Check out Krishnanjan Sil's Portfolio&body=Explore the work of a theoretical physicist at https://krishnanjan.github.io" target="_blank" rel="noopener" aria-label="Share via Email"><img src="https://img.shields.io/badge/Email-Share-0078D4?style=flat-square&logo=microsoft-outlook" alt="Share via Email"></a>
+    </div>
+    <!-- Lightbox for astrophotography images -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-label="Image lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">×</span>
+        <img id="lightbox-image" src="" alt="Astrophotography image">
+    </div>
+    <!-- CV modal for previewing CV -->
+    <div class="cv-modal" id="cv-modal" role="dialog" aria-label="CV preview">
+        <span class="cv-modal-close" onclick="closeCVModal()" aria-label="Close CV preview">×</span>
+        <div class="cv-modal-content">
+            <object data="assets/cv.pdf" type="application/pdf" width="100%" height="600px">
+                <p>Your browser does not support PDFs. <a href="assets/cv.pdf" download>Download the CV</a>.</p>
+            </object>
+            <a href="assets/cv.pdf" class="cv-button" download aria-label="Download CV" onclick="checkCVLink(event)">Download CV</a>
+        </div>
+    </div>
+    <!-- Hamburger menu button for mobile -->
+    <button class="hamburger" aria-label="Toggle navigation menu">☰</button>
+    <!-- Header with typewriter effect -->
+    <header role="banner">
+        <h1 id="header-name">Krishnanjan Sil</h1>
+        <p id="typed-text" aria-live="polite"></p>
+    </header>
+    <!-- Navigation menu -->
+    <nav role="navigation" aria-label="Main navigation">
+        <a href="#about" data-translate="nav-about">About</a>
+        <a href="#my-life" data-translate="nav-my-life">My Life</a>
+        <a href="#research-experience" data-translate="nav-research-experience">Research Experience</a>
+        <a href="#research" data-translate="nav-research">Research Interests</a>
+        <a href="#projects" data-translate="nav-projects">Projects</a>
+        <a href="#papers" data-translate="nav-papers">Papers</a>
+        <a href="#insights" data-translate="nav-insights">Insights</a>
+        <a href="#education" data-translate="nav-education">Education</a>
+        <a href="#hobbies" data-translate="nav-hobbies">Hobbies</a>
+        <a href="#cv" data-translate="nav-cv">CV</a>
+        <a href="#contact" data-translate="nav-contact">Contact</a>
+    </nav>
+    <!-- Main content container -->
+    <main class="container" role="main">
+        <!-- About section -->
+        <section id="about" data-aos="fade-up">
+            <h2 id="about-title" data-translate="about-title">About Me</h2>
+            <p id="about-text" data-translate="about-text">I’m Krishnanjan Sil, a theoretical physicist captivated by the universe’s deepest mysteries. From gazing at stars as a child to solving complex equations today, my journey is driven by a passion for quantum mechanics, cosmology, and particle physics. I aim to bridge theoretical models with empirical discoveries, pushing the boundaries of our cosmic understanding. When not immersed in research, I capture the night sky through astrophotography, dive into sci-fi novels, or hike to reflect on nature’s grandeur.</p>
+        </section>
+        <!-- My Life section with toggleable subsections -->
+        <section id="my-life" data-aos="fade-up">
+            <h2 id="my-life-title" data-translate="my-life-title">My Life</h2>
+            <div class="subsection-toggles">
+                <button class="section-toggle active" data-section="why-physics" aria-controls="why-physics" aria-expanded="true" data-translate="why-physics-title">Why Physics?</button>
+                <button class="section-toggle" data-section="entrepreneurship" aria-controls="entrepreneurship" aria-expanded="false" data-translate="entrepreneurship-title">Entrepreneurship Ideas</button>
+                <button class="section-toggle" data-section="musketeers" aria-controls="musketeers" aria-expanded="false" data-translate="musketeers-title">The 3 Musketeers</button>
+            </div>
+            <div class="subsection active" id="why-physics" aria-hidden="false">
+                <h3 data-translate="why-physics-title">Why Physics?</h3>
+                <p data-translate="why-physics-text">Physics is the foundation of reality, a discipline that decodes the universe’s laws from quarks to quasars. My fascination began with a childhood telescope, revealing Jupiter’s moons and sparking a lifelong quest to understand cosmic phenomena. Physics blends mathematical elegance with empirical rigor, offering answers to profound questions about existence. My mission is to contribute to theories that reshape our view of the cosmos.</p>
+            </div>
+            <div class="subsection" id="entrepreneurship" aria-hidden="true">
+                <h3 data-translate="entrepreneurship-title">Entrepreneurship Ideas</h3>
+                <p data-translate="entrepreneurship-text">I dream of merging physics with innovation. One vision is an open-source platform for quantum computing simulations, empowering students to explore quantum mechanics interactively. Another is a startup developing AI-driven cosmological models to accelerate discoveries in dark energy and galaxy formation. These ideas aim to make science accessible and transformative.</p>
+            </div>
+            <div class="subsection" id="musketeers" aria-hidden="true">
+                <h3 data-translate="musketeers-title">The 3 Musketeers: Experimental, Computational, and Theoretical Physics</h3>
+                <p data-translate="musketeers-text">Physics thrives on three interconnected pillars. Experimental physics tests theories with data, like LIGO’s detection of gravitational waves. Computational physics models complex systems, such as galaxy evolution. Theoretical physics, my focus, crafts mathematical frameworks to predict phenomena like quantum entanglement. Their synergy drives scientific progress, and I’m passionate about contributing to all three.</p>
+            </div>
+        </section>
+        <!-- Research Experience section -->
+        <section id="research-experience" data-aos="fade-up">
+            <h2 data-translate="research-experience-title">Research Experience</h2>
+            <div class="research-experience">
+                <div class="item">
+                    <h3 data-translate="quantum-gravity-title">Quantum Gravity Group, University of Example</h3>
+                    <p><strong data-translate="quantum-gravity-date">Research Assistant, June 2022 – August 2023</strong></p>
+                    <p data-translate="quantum-gravity-text">Collaborated with the Quantum Gravity Group to investigate quantum entanglement in curved spacetime. Developed Python-based simulations using Qiskit to model entanglement dynamics near black holes, contributing to a preprint (arXiv:2506.23681). Analyzed quantum information loss in high-curvature environments and presented findings at the 2023 International Physics Symposium, earning recognition for innovative methodologies.</p>
+                </div>
+                <div class="item">
+                    <h3 data-translate="cosmology-lab-title">Cosmology and Astrophysics Lab, Institute of Advanced Studies</h3>
+                    <p><strong data-translate="cosmology-lab-date">Graduate Researcher, September 2024 – Present</strong></p>
+                    <p data-translate="cosmology-lab-text">Leading cosmological data analysis using Planck satellite data to constrain inflationary models. Developed machine learning algorithms with TensorFlow to detect patterns in CMB temperature fluctuations, improving predictions for dark energy models. Currently drafting a manuscript for submission to The Astrophysical Journal, focusing on baryon acoustic oscillations.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Research Interests section -->
+        <section id="research" data-aos="fade-up">
+            <h2 data-translate="research-title">Research Interests</h2>
+            <p data-translate="research-text">My research lies at the intersection of theoretical physics and observational data, aiming to unravel the universe’s fundamental mysteries through innovative approaches.</p>
+            <ul>
+                <li data-translate="quantum-mechanics-text"><strong>Quantum Mechanics</strong>: I explore quantum entanglement and quantum information theory, simulating multi-qubit systems to study Bell state correlations. My work aims to advance quantum computing and understand decoherence in complex quantum systems.</li>
+                <li data-translate="cosmology-text"><strong>Cosmology</strong>: Focused on cosmic inflation and dark energy, I analyze CMB data to constrain inflationary parameters and investigate baryon acoustic oscillations to understand the universe’s early evolution.</li>
+                <li data-translate="particle-physics-text"><strong>Particle Physics</strong>: Using Monte Carlo simulations, I model particle collisions to probe new physics, with a focus on neutrino oscillations and matter-antimatter asymmetry.</li>
+                <li data-translate="general-relativity-text"><strong>General Relativity</strong>: I analyze LIGO gravitational wave data to study black hole dynamics and explore modified gravity theories to explain cosmic acceleration without dark energy.</li>
+            </ul>
+        </section>
+        <!-- Projects section with timeline -->
+        <section id="projects" data-aos="fade-up">
+            <h2 data-translate="projects-title">Projects</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3 data-translate="quantum-entanglement-title">Quantum Entanglement Simulation</h3>
+                    <p><strong>2023</strong></p>
+                    <p data-translate="quantum-entanglement-text">Developed a Qiskit-based Python simulation to model quantum entanglement, generating Bell states and analyzing particle correlations with statistical visualizations.</p>
+                    <a href="https://github.com/krishnanjan/quantum-entanglement" target="_blank" rel="noopener" data-translate="view-github">View on GitHub</a>
+                </div>
+                <div class="timeline-item">
+                    <h3 data-translate="cosmological-analysis-title">Cosmological Data Analysis</h3>
+                    <p><strong>2024</strong></p>
+                    <p data-translate="cosmological-analysis-text">Analyzed Planck satellite CMB data to study early universe temperature fluctuations, using Python/Matplotlib for power spectrum visualizations and cosmological parameter constraints.</p>
+                    <a href="https://github.com/krishnanjan/cosmological-analysis" target="_blank" rel="noopener" data-translate="view-github">View on GitHub</a>
+                </div>
+                <div class="timeline-item">
+                    <h3 data-translate="particle-simulation-title">Particle Physics Simulation</h3>
+                    <p><strong>2024</strong></p>
+                    <p data-translate="particle-simulation-text">Built a Monte Carlo simulation in C++ and ROOT to model particle collisions in a simplified LHC environment, focusing on decay processes and event reconstruction.</p>
+                    <a href="https://github.com/krishnanjan/particle-simulation" target="_blank" rel="noopener" data-translate="view-github">View on GitHub</a>
+                </div>
+                <div class="timeline-item">
+                    <h3 data-translate="gravitational-waves-title">Gravitational Wave Analysis</h3>
+                    <p><strong>2025</strong></p>
+                    <p data-translate="gravitational-waves-text">Created a Python script to analyze LIGO gravitational wave signals, using Fourier transforms to identify waveform patterns and study binary system dynamics.</p>
+                    <a href="https://github.com/krishnanjan/gravitational-waves" target="_blank" rel="noopener" data-translate="view-github">View on GitHub</a>
+                </div>
+            </div>
+            <!-- Interactive quantum plot -->
+            <div id="quantum-plot" style="margin-top: 1.5rem;"></div>
+        </section>
+        <!-- Papers section with dynamic arXiv feed -->
+        <section id="papers" data-aos="fade-up">
+            <h2 data-translate="papers-title">Papers & Publications</h2>
+            <div class="papers" id="arxiv-feed"></div>
+            <p data-translate="papers-text">Explore my publications on <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener" data-translate="google-scholar">Google Scholar</a>.</p>
+        </section>
+        <!-- Insights section -->
+        <section id="insights" data-aos="fade-up">
+            <h2 data-translate="insights-title">Insights & Thoughts</h2>
+            <div class="insights">
+                <div class="item">
+                    <h3 data-translate="gravitational-waves-insight-title">How Gravitational Waves Changed My Research</h3>
+                    <p data-translate="gravitational-waves-insight-text">A reflection on LIGO’s impact on cosmology and my work on quantum information theory. The detection of gravitational waves opened new avenues for testing general relativity...</p>
+                    <a href="/blog/gravitational-waves" target="_blank" rel="noopener" data-translate="read-more">Read More</a>
+                </div>
+                <div class="item">
+                    <h3 data-translate="quantum-computing-insight-title">Why Quantum Computing Excites Me</h3>
+                    <p data-translate="quantum-computing-insight-text">Exploring the potential of quantum computing to revolutionize physics simulations and solve complex problems in cosmology...</p>
+                    <a href="/blog/quantum-computing" target="_blank" rel="noopener" data-translate="read-more">Read More</a>
+                </div>
+            </div>
+        </section>
+        <!-- Education section -->
+        <section id="education" data-aos="fade-up">
+            <h2 data-translate="education-title">Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3 data-translate="bsc-title">B.Sc. in Physics</h3>
+                    <p>University of Example, 2020–2024</p>
+                    <p data-translate="bsc-text">Graduated with honors, specializing in theoretical physics. Thesis: "Quantum Entanglement in Spin Systems."</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 data-translate="msc-title">M.Sc. in Theoretical Physics</h3>
+                    <p>Institute of Advanced Studies, 2024–Present</p>
+                    <p data-translate="msc-text">Research focus: Cosmology and gravitational wave detection.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Hobbies section -->
+        <section id="hobbies" data-aos="fade-up">
+            <h2 data-translate="hobbies-title">Hobbies</h2>
+            <div class="hobbies">
+                <div class="item">
+                    <p data-translate="astrophotography-text"><strong>Astrophotography</strong>: Capturing celestial wonders with a telescope and DSLR camera.</p>
+                    <div class="gallery">
+                        <img src="assets/astro1.webp" alt="Jupiter captured through telescope" onclick="openLightbox('assets/astro1.webp', 'Jupiter captured through telescope')">
+                        <img src="assets/astro2.webp" alt="Orion Nebula photograph" onclick="openLightbox('assets/astro2.webp', 'Orion Nebula photograph')">
+                    </div>
+                </div>
+                <div class="item">
+                    <p data-translate="sci-fi-text"><strong>Science Fiction Reading</strong>: Inspired by the imaginative worlds of Isaac Asimov and Arthur C. Clarke.</p>
+                </div>
+                <div class="item">
+                    <p data-translate="coding-text"><strong>Coding</strong>: Developing simulations and visualizations to enhance physics research.</p>
+                </div>
+                <div class="item">
+                    <p data-translate="hiking-text"><strong>Hiking</strong>: Exploring nature to reflect on the universe’s vast beauty.</p>
+                </div>
+            </div>
+        </section>
+        <!-- CV section -->
+        <section id="cv" data-aos="fade-up">
+            <h2 data-translate="cv-title">CV</h2>
+            <p data-translate="cv-text">Explore my academic and research journey through my CV.</p>
+            <button class="cv-button" onclick="openCVModal()" aria-label="Preview CV" data-translate="preview-cv">Preview CV</button>
+            <a href="assets/cv.pdf" class="cv-button" download aria-label="Download CV" onclick="checkCVLink(event)" data-translate="download-cv">Download CV</a>
+        </section>
+        <!-- Contact section -->
+        <section id="contact" data-aos="fade-up">
+            <h2 data-translate="contact-title">Contact</h2>
+            <p data-translate="contact-text">Let’s connect to discuss physics, research collaborations, or innovative ideas!</p>
+            <div class="contact-form-container" aria-label="Contact form">
+                <input type="text" id="name" name="name" required aria-required="true" placeholder="Your name" data-translate-placeholder="name-placeholder">
+                <label for="name" data-translate="name-label">Name:</label>
+                <input type="email" id="email" name="email" required aria-required="true" placeholder="Your email" data-translate-placeholder="email-placeholder">
+                <label for="email" data-translate="email-label">Email:</label>
+                <textarea id="message" name="message" required aria-required="true" placeholder="Your message" data-translate-placeholder="message-placeholder"></textarea>
+                <label for="message" data-translate="message-label">Message:</label>
+                <input type="hidden" name="_gotcha" style="display:none !important">
+                <button type="button" onclick="validateForm()" data-translate="send-message">Send Message</button>
+            </div>
+            <p>Email: <a href="mailto:krishnanjan.sil@example.com">krishnanjan.sil@example.com</a></p>
+            <div class="badges">
+                <a href="https://github.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/GitHub-krishnanjan-181717?style=flat-square&logo=github" alt="GitHub Profile"></a>
+                <a href="https://www.linkedin.com/in/krishnanjan-sil" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/LinkedIn-Krishnanjan%20Sil-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn Profile"></a>
+                <a href="https://x.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/X-@krishnanjan-000000?style=flat-square&logo=x" alt="X Profile"></a>
+                <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/ORCID-0000--0000--0000--0000-a6ce39?style=flat-square&logo=orcid" alt="ORCID Profile"></a>
+                <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/Google%20Scholar-Krishnanjan%20Sil-4285F4?style=flat-square&logo=google-scholar" alt="Google Scholar Profile"></a>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer role="contentinfo">
+        <p>© 2025 Krishnanjan Sil. All rights reserved.</p>
+        <p><a href="https://github.com/krishnanjan/krishnanjan.github.io" target="_blank" rel="noopener" data-translate="view-source">View Source Code</a></p>
+        <p data-translate="seo-text">Create <a href="https://krishnanjan.github.io/sitemap.xml">sitemap.xml</a> and <a href="https://krishnanjan.github.io/robots.txt">robots.txt</a> in your repo root for SEO.</p>
+    </footer>
+    <script>
+        // Translation data for all content
+        const translations = {
+            en: {
+                // Navigation
+                'nav-about': 'About',
+                'nav-my-life': 'My Life',
+                'nav-research-experience': 'Research Experience',
+                'nav-research': 'Research Interests',
+                'nav-projects': 'Projects',
+                'nav-papers': 'Papers',
+                'nav-insights': 'Insights',
+                'nav-education': 'Education',
+                'nav-hobbies': 'Hobbies',
+                'nav-cv': 'CV',
+                'nav-contact': 'Contact',
+                // About
+                'about-title': 'About Me',
+                'about-text': 'I’m Krishnanjan Sil, a theoretical physicist captivated by the universe’s deepest mysteries. From gazing at stars as a child to solving complex equations today, my journey is driven by a passion for quantum mechanics, cosmology, and particle physics. I aim to bridge theoretical models with empirical discoveries, pushing the boundaries of our cosmic understanding. When not immersed in research, I capture the night sky through astrophotography, dive into sci-fi novels, or hike to reflect on nature’s grandeur.',
+                // My Life
+                'my-life-title': 'My Life',
+                'why-physics-title': 'Why Physics?',
+                'why-physics-text': 'Physics is the foundation of reality, a discipline that decodes the universe’s laws from quarks to quasars. My fascination began with a childhood telescope, revealing Jupiter’s moons and sparking a lifelong quest to understand cosmic phenomena. Physics blends mathematical elegance with empirical rigor, offering answers to profound questions about existence. My mission is to contribute to theories that reshape our view of the cosmos.',
+                'entrepreneurship-title': 'Entrepreneurship Ideas',
+                'entrepreneurship-text': 'I dream of merging physics with innovation. One vision is an open-source platform for quantum computing simulations, empowering students to explore quantum mechanics interactively. Another is a startup developing AI-driven cosmological models to accelerate discoveries in dark energy and galaxy formation. These ideas aim to make science accessible and transformative.',
+                'musketeers-title': 'The 3 Musketeers: Experimental, Computational, and Theoretical Physics',
+                'musketeers-text': 'Physics thrives on three interconnected pillars. Experimental physics tests theories with data, like LIGO’s detection of gravitational waves. Computational physics models complex systems, such as galaxy evolution. Theoretical physics, my focus, crafts mathematical frameworks to predict phenomena like quantum entanglement. Their synergy drives scientific progress, and I’m passionate about contributing to all three.',
+                // Research Experience
+                'research-experience-title': 'Research Experience',
+                'quantum-gravity-title': 'Quantum Gravity Group, University of Example',
+                'quantum-gravity-date': 'Research Assistant, June 2022 – August 2023',
+                'quantum-gravity-text': 'Collaborated with the Quantum Gravity Group to investigate quantum entanglement in curved spacetime. Developed Python-based simulations using Qiskit to model entanglement dynamics near black holes, contributing to a preprint (arXiv:2506.23681). Analyzed quantum information loss in high-curvature environments and presented findings at the 2023 International Physics Symposium, earning recognition for innovative methodologies.',
+                'cosmology-lab-title': 'Cosmology and Astrophysics Lab, Institute of Advanced Studies',
+                'cosmology-lab-date': 'Graduate Researcher, September 2024 – Present',
+                'cosmology-lab-text': 'Leading cosmological data analysis using Planck satellite data to constrain inflationary models. Developed machine learning algorithms with TensorFlow to detect patterns in CMB temperature fluctuations, improving predictions for dark energy models. Currently drafting a manuscript for submission to The Astrophysical Journal, focusing on baryon acoustic oscillations.',
+                // Research Interests
+                'research-title': 'Research Interests',
+                'research-text': 'My research lies at the intersection of theoretical physics and observational data, aiming to unravel the universe’s fundamental mysteries through innovative approaches.',
+                'quantum-mechanics-text': '<strong>Quantum Mechanics</strong>: I explore quantum entanglement and quantum information theory, simulating multi-qubit systems to study Bell state correlations. My work aims to advance quantum computing and understand decoherence in complex quantum systems.',
+                'cosmology-text': '<strong>Cosmology</strong>: Focused on cosmic inflation and dark energy, I analyze CMB data to constrain inflationary parameters and investigate baryon acoustic oscillations to understand the universe’s early evolution.',
+                'particle-physics-text': '<strong>Particle Physics</strong>: Using Monte Carlo simulations, I model particle collisions to probe new physics, with a focus on neutrino oscillations and matter-antimatter asymmetry.',
+                'general-relativity-text': '<strong>General Relativity</strong>: I analyze LIGO gravitational wave data to study black hole dynamics and explore modified gravity theories to explain cosmic acceleration without dark energy.',
+                // Projects
+                'projects-title': 'Projects',
+                'quantum-entanglement-title': 'Quantum Entanglement Simulation',
+                'quantum-entanglement-text': 'Developed a Qiskit-based Python simulation to model quantum entanglement, generating Bell states and analyzing particle correlations with statistical visualizations.',
+                'cosmological-analysis-title': 'Cosmological Data Analysis',
+                'cosmological-analysis-text': 'Analyzed Planck satellite CMB data to study early universe temperature fluctuations, using Python/Matplotlib for power spectrum visualizations and cosmological parameter constraints.',
+                'particle-simulation-title': 'Particle Physics Simulation',
+                'particle-simulation-text': 'Built a Monte Carlo simulation in C++ and ROOT to model particle collisions in a simplified LHC environment, focusing on decay processes and event reconstruction.',
+                'gravitational-waves-title': 'Gravitational Wave Analysis',
+                'gravitational-waves-text': 'Created a Python script to analyze LIGO gravitational wave signals, using Fourier transforms to identify waveform patterns and study binary system dynamics.',
+                'view-github': 'View on GitHub',
+                // Papers
+                'papers-title': 'Papers & Publications',
+                'papers-text': 'Explore my publications on <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener">Google Scholar</a>.',
+                // Insights
+                'insights-title': 'Insights & Thoughts',
+                'gravitational-waves-insight-title': 'How Gravitational Waves Changed My Research',
+                'gravitational-waves-insight-text': 'A reflection on LIGO’s impact on cosmology and my work on quantum information theory. The detection of gravitational waves opened new avenues for testing general relativity...',
+                'quantum-computing-insight-title': 'Why Quantum Computing Excites Me',
+                'quantum-computing-insight-text': 'Exploring the potential of quantum computing to revolutionize physics simulations and solve complex problems in cosmology...',
+                'read-more': 'Read More',
+                // Education
+                'education-title': 'Education',
+                'bsc-title': 'B.Sc. in Physics',
+                'bsc-text': 'Graduated with honors, specializing in theoretical physics. Thesis: "Quantum Entanglement in Spin Systems."',
+                'msc-title': 'M.Sc. in Theoretical Physics',
+                'msc-text': 'Research focus: Cosmology and gravitational wave detection.',
+                // Hobbies
+                'hobbies-title': 'Hobbies',
+                'astrophotography-text': '<strong>Astrophotography</strong>: Capturing celestial wonders with a telescope and DSLR camera.',
+                'sci-fi-text': '<strong>Science Fiction Reading</strong>: Inspired by the imaginative worlds of Isaac Asimov and Arthur C. Clarke.',
+                'coding-text': '<strong>Coding</strong>: Developing simulations and visualizations to enhance physics research.',
+                'hiking-text': '<strong>Hiking</strong>: Exploring nature to reflect on the universe’s vast beauty.',
+                // CV
+                'cv-title': 'CV',
+                'cv-text': 'Explore my academic and research journey through my CV.',
+                'preview-cv': 'Preview CV',
+                'download-cv': 'Download CV',
+                // Contact
+                'contact-title': 'Contact',
+                'contact-text': 'Let’s connect to discuss physics, research collaborations, or innovative ideas!',
+                'name-placeholder': 'Your name',
+                'email-placeholder': 'Your email',
+                'message-placeholder': 'Your message',
+                'name-label': 'Name:',
+                'email-label': 'Email:',
+                'message-label': 'Message:',
+                'send-message': 'Send Message',
+                // Footer
+                'view-source': 'View Source Code',
+                'seo-text': 'Create <a href="https://krishnanjan.github.io/sitemap.xml">sitemap.xml</a> and <a href="https://krishnanjan.github.io/robots.txt">robots.txt</a> in your repo root for SEO.',
+                // Feedback
+                'feedback-text': 'Was this page helpful?'
+            },
+            fr: {
+                'nav-about': 'À propos',
+                'nav-my-life': 'Ma vie',
+                'nav-research-experience': 'Expérience de recherche',
+                'nav-research': 'Intérêts de recherche',
+                'nav-projects': 'Projets',
+                'nav-papers': 'Publications',
+                'nav-insights': 'Perspectives',
+                'nav-education': 'Éducation',
+                'nav-hobbies': 'Loisirs',
+                'nav-cv': 'CV',
+                'nav-contact': 'Contact',
+                'about-title': 'À propos de moi',
+                'about-text': 'Je suis Krishnanjan Sil, un physicien théoricien fasciné par les mystères les plus profonds de l’univers. Depuis mon enfance à observer les étoiles jusqu’à résoudre des équations complexes aujourd’hui, mon parcours est guidé par une passion pour la mécanique quantique, la cosmologie et la physique des particules. Je vise à relier les modèles théoriques aux découvertes empiriques, repoussant les limites de notre compréhension cosmique. En dehors de la recherche, je capture le ciel nocturne par l’astrophotographie, me plonge dans des romans de science-fiction ou randonne pour réfléchir à la grandeur de la nature.',
+                'my-life-title': 'Ma vie',
+                'why-physics-title': 'Pourquoi la physique ?',
+                'why-physics-text': 'La physique est le fondement de la réalité, une discipline qui décrypte les lois de l’univers, des quarks aux quasars. Ma fascination a commencé avec un télescope d’enfance, révélant les lunes de Jupiter et déclenchant une quête de toute une vie pour comprendre les phénomènes cosmiques. La physique mêle l’élégance mathématique à la rigueur empirique, offrant des réponses aux questions profondes sur l’existence. Ma mission est de contribuer à des théories qui remodèlent notre vision du cosmos.',
+                'entrepreneurship-title': 'Idées d’entrepreneuriat',
+                'entrepreneurship-text': 'Je rêve de fusionner la physique avec l’innovation. Une vision est une plateforme open-source pour des simulations d’informatique quantique, permettant aux étudiants d’explorer la mécanique quantique de manière interactive. Une autre est une startup développant des modèles cosmologiques basés sur l’IA pour accélérer les découvertes sur l’énergie sombre et la formation des galaxies. Ces idées visent à rendre la science accessible et transformatrice.',
+                'musketeers-title': 'Les trois mousquetaires : Physique expérimentale, computationnelle et théorique',
+                'musketeers-text': 'La physique prospère sur trois piliers interconnectés. La physique expérimentale teste les théories avec des données, comme la détection des ondes gravitationnelles par LIGO. La physique computationnelle modélise des systèmes complexes, comme l’évolution des galaxies. La physique théorique, mon domaine, élabore des cadres mathématiques pour prédire des phénomènes comme l’intrication quantique. Leur synergie stimule le progrès scientifique, et je suis passionné par contribuer aux trois.',
+                'research-experience-title': 'Expérience de recherche',
+                'quantum-gravity-title': 'Groupe de gravité quantique, Université de l’Exemple',
+                'quantum-gravity-date': 'Assistant de recherche, juin 2022 – août 2023',
+                'quantum-gravity-text': 'Collaboré avec le groupe de gravité quantique pour étudier l’intrication quantique dans l’espace-temps courbe. Développé des simulations basées sur Python avec Qiskit pour modéliser la dynamique de l’intrication près des trous noirs, contribuant à un preprint (arXiv:2506.23681). Analysé la perte d’information quantique dans des environnements à forte courbure et présenté les résultats au Symposium international de physique 2023, recevant des éloges pour des méthodologies innovantes.',
+                'cosmology-lab-title': 'Laboratoire de cosmologie et d’astrophysique, Institut d’études avancées',
+                'cosmology-lab-date': 'Chercheur diplômé, septembre 2024 – présent',
+                'cosmology-lab-text': 'Dirige l’analyse des données cosmologiques à l’aide des données du satellite Planck pour contraindre les modèles inflationnistes. Développé des algorithmes d’apprentissage automatique avec TensorFlow pour détecter des motifs dans les fluctuations de température du CMB, améliorant les prédictions pour les modèles d’énergie sombre. Actuellement en rédaction d’un manuscrit pour soumission à The Astrophysical Journal, axé sur les oscillations acoustiques des baryons.',
+                'research-title': 'Intérêts de recherche',
+                'research-text': 'Mes recherches se situent à l’intersection de la physique théorique et des données observationnelles, visant à percer les mystères fondamentaux de l’univers grâce à des approches innovantes.',
+                'quantum-mechanics-text': '<strong>Mécanique quantique</strong> : J’explore l’intrication quantique et la théorie de l’information quantique, simulant des systèmes multi-qubits pour étudier les corrélations des états de Bell. Mes travaux visent à faire progresser l’informatique quantique et à comprendre la décohérence dans les systèmes quantiques complexes.',
+                'cosmology-text': '<strong>Cosmologie</strong> : Axé sur l’inflation cosmique et l’énergie sombre, j’analyse les données du CMB pour contraindre les paramètres inflationnistes et étudier les oscillations acoustiques des baryons pour comprendre l’évolution précoce de l’univers.',
+                'particle-physics-text': '<strong>Physique des particules</strong> : À l’aide de simulations Monte Carlo, je modélise les collisions de particules pour explorer de nouvelles physiques, avec un accent sur les oscillations des neutrinos et l’asymétrie matière-antimatière.',
+                'general-relativity-text': '<strong>Relativité générale</strong> : J’analyse les données d’ondes gravitationnelles de LIGO pour étudier la dynamique des trous noirs et explorer des théories de gravité modifiée pour expliquer l’accélération cosmique sans énergie sombre.',
+                'projects-title': 'Projets',
+                'quantum-entanglement-title': 'Simulation d’intrication quantique',
+                'quantum-entanglement-text': 'Développé une simulation basée sur Qiskit en Python pour modéliser l’intrication quantique, générant des états de Bell et analysant les corrélations de particules avec des visualisations statistiques.',
+                'cosmological-analysis-title': 'Analyse des données cosmologiques',
+                'cosmological-analysis-text': 'Analysé les données CMB du satellite Planck pour étudier les fluctuations de température de l’univers primitif, utilisant Python/Matplotlib pour les visualisations de spectre de puissance et les contraintes des paramètres cosmologiques.',
+                'particle-simulation-title': 'Simulation de physique des particules',
+                'particle-simulation-text': 'Construit une simulation Monte Carlo en C++ et ROOT pour modéliser les collisions de particules dans un environnement LHC simplifié, se concentrant sur les processus de désintégration et la reconstruction d’événements.',
+                'gravitational-waves-title': 'Analyse des ondes gravitationnelles',
+                'gravitational-waves-text': 'Créé un script Python pour analyser les signaux d’ondes gravitationnelles de LIGO, utilisant des transformées de Fourier pour identifier les motifs d’onde et étudier la dynamique des systèmes binaires.',
+                'view-github': 'Voir sur GitHub',
+                'papers-title': 'Publications',
+                'papers-text': 'Explorez mes publications sur <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener">Google Scholar</a>.',
+                'insights-title': 'Perspectives et réflexions',
+                'gravitational-waves-insight-title': 'Comment les ondes gravitationnelles ont changé ma recherche',
+                'gravitational-waves-insight-text': 'Une réflexion sur l’impact de LIGO sur la cosmologie et mes travaux sur la théorie de l’information quantique. La détection des ondes gravitationnelles a ouvert de nouvelles avenues pour tester la relativité générale...',
+                'quantum-computing-insight-title': 'Pourquoi l’informatique quantique m’enthousiasme',
+                'quantum-computing-insight-text': 'Exploration du potentiel de l’informatique quantique pour révolutionner les simulations physiques et résoudre des problèmes complexes en cosmologie...',
+                'read-more': 'Lire la suite',
+                'education-title': 'Éducation',
+                'bsc-title': 'Licence en physique',
+                'bsc-text': 'Diplômé avec mention, spécialisé en physique théorique. Thèse : "Intrication quantique dans les systèmes de spin."',
+                'msc-title': 'Master en physique théorique',
+                'msc-text': 'Focus de recherche : Cosmologie et détection des ondes gravitationnelles.',
+                'hobbies-title': 'Loisirs',
+                'astrophotography-text': '<strong>Astrophotographie</strong> : Capturer les merveilles célestes avec un télescope et un appareil photo DSLR.',
+                'sci-fi-text': '<strong>Lecture de science-fiction</strong> : Inspiré par les mondes imaginatifs d’Isaac Asimov et Arthur C. Clarke.',
+                'coding-text': '<strong>Programmation</strong> : Développer des simulations et des visualisations pour améliorer la recherche en physique.',
+                'hiking-text': '<strong>Randonnée</strong> : Explorer la nature pour réfléchir à la vaste beauté de l’univers.',
+                'cv-title': 'CV',
+                'cv-text': 'Explorez mon parcours académique et de recherche à travers mon CV.',
+                'preview-cv': 'Aperçu du CV',
+                'download-cv': 'Télécharger le CV',
+                'contact-title': 'Contact',
+                'contact-text': 'Connectons-nous pour discuter de physique, de collaborations de recherche ou d’idées innovantes !',
+                'name-placeholder': 'Votre nom',
+                'email-placeholder': 'Votre email',
+                'message-placeholder': 'Votre message',
+                'name-label': 'Nom :',
+                'email-label': 'Email :',
+                'message-label': 'Message :',
+                'send-message': 'Envoyer le message',
+                'view-source': 'Voir le code source',
+                'seo-text': 'Créez un <a href="https://krishnanjan.github.io/sitemap.xml">sitemap.xml</a> et un <a href="https://krishnanjan.github.io/robots.txt">robots.txt</a> dans la racine de votre dépôt pour le référencement.',
+                'feedback-text': 'Cette page vous a-t-elle été utile ?'
+            },
+            de: {
+                'nav-about': 'Über mich',
+                'nav-my-life': 'Mein Leben',
+                'nav-research-experience': 'Forschungserfahrung',
+                'nav-research': 'Forschungsinteressen',
+                'nav-projects': 'Projekte',
+                'nav-papers': 'Veröffentlichungen',
+                'nav-insights': 'Erkenntnisse',
+                'nav-education': 'Ausbildung',
+                'nav-hobbies': 'Hobbys',
+                'nav-cv': 'Lebenslauf',
+                'nav-contact': 'Kontakt',
+                'about-title': 'Über mich',
+                'about-text': 'Ich bin Krishnanjan Sil, ein theoretischer Physiker, der von den tiefsten Geheimnissen des Universums fasziniert ist. Von der Beobachtung der Sterne in meiner Kindheit bis hin zur Lösung komplexer Gleichungen heute wird mein Weg von einer Leidenschaft für Quantenmechanik, Kosmologie und Teilchenphysik angetrieben. Ich strebe danach, theoretische Modelle mit empirischen Entdeckungen zu verbinden und die Grenzen unseres kosmischen Verständnisses zu erweitern. Wenn ich nicht in die Forschung vertieft bin, fange ich den Nachthimmel durch Astrofotografie ein, tauche in Science-Fiction-Romane ein oder wandere, um die Größe der Natur zu reflektieren.',
+                'my-life-title': 'Mein Leben',
+                'why-physics-title': 'Warum Physik?',
+                'why-physics-text': 'Physik ist das Fundament der Realität, eine Disziplin, die die Gesetze des Universums von Quarks bis zu Quasaren entschlüsselt. Meine F
