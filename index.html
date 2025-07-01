@@ -1,0 +1,1546 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Krishnanjan Sil, a theoretical physicist specializing in quantum mechanics, cosmology, and particle physics.">
+    <meta name="keywords" content="theoretical physics, quantum mechanics, cosmology, particle physics, Krishnanjan Sil, astrophysics, quantum computing">
+    <meta name="author" content="Krishnanjan Sil">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Krishnanjan Sil - Theoretical Physicist Portfolio">
+    <meta property="og:description" content="Discover the research, projects, and insights of Krishnanjan Sil, a theoretical physicist.">
+    <meta property="og:image" content="https://krishnanjan.github.io/assets/og-image.jpg">
+    <meta property="og:url" content="https://krishnanjan.github.io">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Krishnanjan Sil - Theoretical Physicist">
+    <meta name="twitter:description" content="Portfolio showcasing research in quantum mechanics, cosmology, and particle physics.">
+    <meta name="twitter:image" content="https://krishnanjan.github.io/assets/og-image.jpg">
+    <meta name="twitter:creator" content="@krishnanjan">
+    <title>Krishnanjan Sil - Theoretical Physicist</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png" loading="lazy">
+    <link rel="canonical" href="https://krishnanjan.github.io">
+    <link rel="sitemap" href="/sitemap.xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Slab:wght@400;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.warn('Particle.js failed to load')"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <style>
+        :root {
+            --primary: #7ba3ff;
+            --secondary: #b3d4ff;
+            --dark-bg: #0a0a23;
+            --light-bg: linear-gradient(135deg, #e8f1ff 0%, #d4e2ff 100%);
+            --radius: 1rem;
+            --shadow: 0 8px 20px rgba(0,0,255,0.4);
+            --spacing: 1.8em;
+            --text-light: #f5f6fa;
+            --text-dark: #1c2526;
+            --contrast-text: #ffffff;
+            --high-contrast-dark: #1a1a3d;
+            --high-contrast-light: #002d72;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            line-height: 1.8;
+            overflow-x: hidden;
+            background: var(--dark-bg);
+            color: var(--contrast-text);
+            transition: background 0.4s, color 0.4s, font-size 0.4s;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            loading: lazy;
+        }
+        body.font-small { font-size: 14px; }
+        body.font-medium { font-size: 16px; }
+        body.font-large { font-size: 18px; }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: transparent;
+            transition: opacity 0.5s;
+        }
+        body.light-mode #particles-js {
+            opacity: 0.3;
+        }
+        body.light-mode {
+            background: var(--light-bg);
+            color: var(--high-contrast-light);
+        }
+        body.light-mode header {
+            background: linear-gradient(180deg, rgba(70,130,255,0.95), transparent);
+            box-shadow: var(--shadow);
+        }
+        body.light-mode nav {
+            background: linear-gradient(90deg, #4a7bff, var(--primary));
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        body.light-mode .item {
+            background: rgba(255,255,255,0.98);
+            box-shadow: var(--shadow);
+        }
+        body.light-mode footer {
+            background: linear-gradient(90deg, #4a7bff, var(--primary));
+            color: var(--high-contrast-light);
+        }
+        body.light-mode h2, body.light-mode h3, body.light-mode p, body.light-mode li {
+            color: var(--high-contrast-light);
+        }
+        body.light-mode .section-toggle {
+            background: #e8f1ff;
+            color: var(--high-contrast-light);
+            border: 1px solid var(--primary);
+        }
+        body.light-mode a {
+            color: var(--high-contrast-light);
+        }
+        body.light-mode a:hover, body.light-mode a:focus {
+            color: #007bff;
+            text-decoration: underline;
+        }
+        body.light-mode header p#typed-text {
+            color: #1a1a3d;
+        }
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: var(--contrast-text);
+        }
+        body.dark-mode header {
+            background: linear-gradient(180deg, rgba(0,0,60,0.95), transparent);
+            box-shadow: var(--shadow);
+        }
+        body.dark-mode nav {
+            background: linear-gradient(90deg, #1c2526, #2e3a4a);
+            box-shadow: 0 4px 12px rgba(0,0,255,0.3);
+        }
+        body.dark-mode .item {
+            background: rgba(255,255,255,0.15);
+            box-shadow: var(--shadow);
+        }
+        body.dark-mode .section-toggle {
+            background: rgba(255,255,255,0.15);
+            color: var(--primary);
+            border: 1px solid #5a7bff;
+        }
+        body.dark-mode a {
+            color: var(--primary);
+        }
+        body.dark-mode a:hover, body.dark-mode a:focus {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+        header {
+            text-align: center;
+            padding: 8em 1em;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 60%);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4em;
+            font-weight: 700;
+            color: var(--contrast-text);
+            text-shadow: 0 0 25px rgba(0,0,255,0.7);
+            margin-bottom: 0.6em;
+            cursor: pointer;
+        }
+        header p#typed-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5em;
+            color: var(--primary);
+            text-shadow: 0 0 8px rgba(0,0,255,0.4);
+            min-height: 2em;
+        }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            transition: background 0.4s;
+        }
+        body.light-mode nav {
+            background: linear-gradient(90deg, #4a7bff, var(--primary));
+        }
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5em;
+            transition: transform 0.3s ease;
+        }
+        nav a {
+            color: var(--contrast-text);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.2em;
+            transition: color 0.4s, transform 0.4s;
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -6px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.4s;
+        }
+        nav a:hover::after, nav a:focus::after {
+            width: 100%;
+        }
+        nav a:hover, nav a:focus {
+            color: #fff;
+            transform: translateY(-3px);
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+        }
+        .hamburger {
+            display: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: var(--contrast-text);
+            z-index: 1001;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2.5em;
+        }
+        .nav-links.active {
+            transform: translateX(0);
+        }
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: inherit;
+                padding: 1em;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            .nav-links.active {
+                display: flex;
+                transform: translateX(0);
+            }
+            .nav-links a {
+                padding: 0.5em 0;
+                font-size: 1.5em;
+                text-align: center;
+            }
+        }
+        .controls {
+            position: fixed;
+            top: 1.5em;
+            right: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 1.2em;
+            z-index: 1001;
+        }
+        .font-size-selector select {
+            padding: 0.7em;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.2);
+            color: var(--contrast-text);
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: border 0.4s, box-shadow 0.4s, transform 0.4s;
+        }
+        .font-size-selector select:hover {
+            transform: scale(1.05);
+        }
+        .font-size-selector select:focus {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0,82,204,0.5);
+            outline: 3px solid var(--primary);
+        }
+        body.light-mode .font-size-selector select {
+            background: #fff;
+            color: var(--high-contrast-light);
+            border: 1px solid var(--primary);
+        }
+        .theme-toggle {
+            background: linear-gradient(45deg, #004aad, var(--primary));
+            color: #fff;
+            border: none;
+            padding: 0.8em 1.6em;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .theme-toggle:hover, .theme-toggle:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .back-to-top {
+            position: fixed;
+            bottom: 2em;
+            right: 2em;
+            background: linear-gradient(45deg, #004aad, var(--primary));
+            color: #fff;
+            padding: 1em 1.5em;
+            border-radius: 50%;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            display: none;
+            z-index: 1000;
+            transition: opacity 0.4s, transform 0.4s;
+        }
+        .back-to-top.show {
+            display: block;
+            opacity: 1;
+        }
+        .back-to-top:hover, .back-to-top:focus {
+            transform: translateY(-5px) scale(1.1);
+            outline: 3px solid var(--primary);
+        }
+        .container {
+            max-width: 1300px;
+            margin: 6em auto 4em;
+            padding: 0 var(--spacing);
+            position: relative;
+            z-index: 10;
+            opacity: 1 !important; /* Ensure container is always visible */
+        }
+        section {
+            margin-bottom: 7em;
+            background: rgba(255,255,255,0.1);
+            padding: 3.5em;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            display: block !important; /* Ensure sections are visible */
+            opacity: 1 !important; /* Override animation hiding */
+        }
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0.3;
+            z-index: -1;
+        }
+        section.visible {
+            opacity: 1 !important; /* Ensure visibility when intersected */
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            border-bottom: 4px solid var(--primary);
+            padding-bottom: 0.6em;
+            font-size: 2.5em;
+            font-weight: 700;
+            position: relative;
+            transition: color 0.4s;
+        }
+        body.light-mode h2 {
+            color: var(--high-contrast-light);
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -4px;
+            left: 0;
+            transition: width 0.4s;
+        }
+        h2:hover::after {
+            width: 120px;
+        }
+        p, li {
+            color: var(--contrast-text);
+            line-height: 2.1;
+            margin-bottom: var(--spacing);
+        }
+        body.light-mode p, body.light-mode li {
+            color: var(--high-contrast-light);
+        }
+        h3 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.8em;
+            margin-bottom: 0.8em;
+            color: var(--secondary);
+        }
+        body.light-mode h3 {
+            color: var(--high-contrast-light);
+        }
+        .subsection {
+            display: none;
+            margin-top: 2.5em;
+            padding: 2.5em;
+            background: rgba(255,255,255,0.18);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        .subsection.active {
+            display: block;
+        }
+        .section-toggle {
+            padding: 0.8em 1.8em;
+            margin: 0.8em;
+            background: rgba(255,255,255,0.18);
+            color: var(--primary);
+            border: 1px solid #5a7bff;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.4s, transform 0.4s, box-shadow 0.4s;
+        }
+        body.light-mode .section-toggle {
+            color: var(--high-contrast-light);
+        }
+        .section-toggle:hover, .section-toggle:focus {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .section-toggle.active {
+            background: #004aad;
+            color: #fff;
+            box-shadow: var(--shadow);
+        }
+        .papers, .research-experience, .hobbies, .my-life, .insights, .social-feed {
+            display: grid;
+            gap: 3.5em;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+        }
+        .item {
+            background: rgba(255,255,255,0.15);
+            padding: 3em;
+            border-radius: var(--radius);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 1 !important; /* Ensure items are visible */
+        }
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,82,204,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+        .item:hover::before {
+            opacity: 1;
+        }
+        .item:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
+        }
+        .item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.4s;
+        }
+        body.light-mode .item a {
+            color: var(--high-contrast-light);
+        }
+        .item a:hover, .item a:focus {
+            color: var(--secondary);
+            text-decoration: underline;
+            outline: 3px solid var(--primary);
+        }
+        .timeline {
+            position: relative;
+            padding: 2em 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            margin: 2em 0;
+            width: 50%;
+            padding: 1em 2em;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .timeline-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow);
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.5em;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item:nth-child(odd)::before {
+            right: -8px;
+        }
+        .timeline-item:nth-child(even)::before {
+            left: -8px;
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: transform 0.4s;
+        }
+        .lightbox img:hover {
+            transform: scale(1.02);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            color: #fff;
+            font-size: 2em;
+            cursor: pointer;
+            transition: transform 0.4s;
+        }
+        .lightbox-close:hover, .lightbox-close:focus {
+            transform: scale(1.2);
+            outline: 3px solid var(--primary);
+        }
+        .contact-form, .newsletter-form {
+            display: grid;
+            gap: var(--spacing);
+            max-width: 800px;
+            margin: 2.5em auto;
+        }
+        label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        body.light-mode label {
+            color: var(--high-contrast-light);
+        }
+        input, textarea {
+            padding: 1.2em;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.2);
+            color: var(--contrast-text);
+            font-family: 'Inter', sans-serif;
+            transition: border 0.4s, box-shadow 0.4s, transform 0.4s;
+        }
+        body.light-mode input, body.light-mode textarea {
+            background: #fff;
+            color: var(--high-contrast-light);
+        }
+        input:focus, textarea:focus {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 12px rgba(0,82,204,0.6);
+            outline: 3px solid var(--primary);
+            transform: scale(1.02);
+        }
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        button {
+            padding: 1.2em 2.5em;
+            background: linear-gradient(45deg, #004aad, var(--primary));
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        button:hover, button:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .cv-button {
+            display: inline-block;
+            padding: 1.2em 2.5em;
+            background: linear-gradient(45deg, #004aad, var(--primary));
+            color: #fff;
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .cv-button:hover, .cv-button:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .badges {
+            display: flex;
+            gap: 1em;
+            margin-top: 1em;
+            flex-wrap: wrap;
+        }
+        .search-bar {
+            position: relative;
+            max-width: 500px;
+            margin: 2em auto;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 1em 3em 1em 1em;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.2);
+            color: var(--contrast-text);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.4s;
+        }
+        body.light-mode .search-bar input {
+            background: #fff;
+            color: var(--high-contrast-light);
+        }
+        .search-bar input:focus {
+            box-shadow: 0 0 12px rgba(0,82,204,0.6);
+            transform: scale(1.02);
+        }
+        .search-bar button {
+            position: absolute;
+            right: 0.5em;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        .newsletter {
+            max-width: 500px;
+            margin: 2em auto;
+            text-align: center;
+        }
+        .newsletter input {
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        .newsletter button {
+            width: 100%;
+        }
+        .github-contributions {
+            margin-top: 2em;
+            text-align: center;
+        }
+        .github-contributions img {
+            max-width: 100%;
+            border-radius: var(--radius);
+        }
+        footer {
+            background: linear-gradient(90deg, #1c2526, #2e3a4a);
+            text-align: center;
+            padding: 4em 0;
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+        body.light-mode footer {
+            color: var(--high-contrast-light);
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at bottom, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0.4;
+            z-index: -1;
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        body.light-mode footer a {
+            color: var(--high-contrast-light);
+        }
+        footer a:hover, footer a:focus {
+            color: var(--secondary);
+            text-decoration: underline;
+            outline: 3px solid var(--primary);
+        }
+        @media (max-width: 768px) {
+            header h1 { font-size: 3em; }
+            header p#typed-text { font-size: 1.3em; }
+            .container { margin-top: 5em; padding: 0 2em; }
+            section { padding: 2.5em; }
+            .papers, .research-experience, .hobbies, .my-life, .insights, .social-feed { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; align-items: flex-end; gap: 1em; top: 0.8em; }
+            .back-to-top { bottom: 1.5em; right: 1.5em; }
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; left: 0; text-align: left; padding-left: 40px; }
+            .timeline-item::before { left: 12px; }
+            .badges { flex-direction: column; }
+        }
+        @media (max-width: 480px) {
+            header { padding: 5em 1em; }
+            header h1 { font-size: 2.2em; }
+            header p#typed-text { font-size: 1.1em; }
+            .container { padding: 0 1.8em; }
+            h2 { font-size: 2em; }
+            .controls { top: 0.5em; }
+        }
+    </style>
+</head>
+<body class="dark-mode font-medium">
+    <div id="particles-js" role="presentation" aria-hidden="true"></div>
+    <div class="search-bar">
+        <input type="text" id="search" placeholder="Search content..." aria-label="Search content">
+        <button aria-label="Search"><span>🔍</span></button>
+    </div>
+    <div class="controls">
+        <div class="font-size-selector">
+            <select id="font-size" aria-label="Select font size">
+                <option value="small">Small Font</option>
+                <option value="medium" selected>Medium Font</option>
+                <option value="large">Large Font</option>
+            </select>
+        </div>
+        <button class="theme-toggle" aria-label="Toggle light/dark theme">Light Mode</button>
+    </div>
+    <a href="#" class="back-to-top" aria-label="Back to top">↑ Top</a>
+    <div class="lightbox" id="lightbox" role="dialog" aria-label="Image lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">×</span>
+        <img id="lightbox-image" src="" alt="Astrophotography image">
+    </div>
+    <header role="banner">
+        <h1>Krishnanjan Sil</h1>
+        <p id="typed-text" aria-live="polite"></p>
+    </header>
+    <nav role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <span class="hamburger" aria-label="Toggle navigation" role="button" tabindex="0">☰</span>
+            <div class="nav-links" aria-hidden="true">
+                <a href="#about">About</a>
+                <a href="#my-life">My Life</a>
+                <a href="#research-experience">Research Experience</a>
+                <a href="#research">Research Interests</a>
+                <a href="#projects">Projects</a>
+                <a href="#papers">Papers</a>
+                <a href="#insights">Insights</a>
+                <a href="#education">Education</a>
+                <a href="#hobbies">Hobbies</a>
+                <a href="#social">Social Feed</a>
+                <a href="#cv">CV</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <main class="container" role="main">
+        <section id="about" data-aos="fade-up">
+            <h2>About Me</h2>
+            <p id="about-text">I’m Krishnanjan Sil, a theoretical physicist captivated by the universe’s deepest mysteries. From gazing at stars as a child to solving complex equations today, my journey is driven by a passion for quantum mechanics, cosmology, and particle physics. I aim to bridge theoretical models with empirical discoveries, pushing the boundaries of our cosmic understanding. When not immersed in research, I capture the night sky through astrophotography, dive into sci-fi novels, or hike to reflect on nature’s grandeur.</p>
+        </section>
+        <section id="my-life" data-aos="fade-up">
+            <h2>My Life</h2>
+            <div class="subsection-toggles">
+                <button class="section-toggle active" data-section="why-physics" aria-controls="why-physics" aria-expanded="true">Why Physics?</button>
+                <button class="section-toggle" data-section="entrepreneurship" aria-controls="entrepreneurship" aria-expanded="false">Entrepreneurship Ideas</button>
+                <button class="section-toggle" data-section="musketeers" aria-controls="musketeers" aria-expanded="false">The 3 Musketeers</button>
+            </div>
+            <div class="subsection active" id="why-physics" aria-hidden="false">
+                <h3>Why Physics?</h3>
+                <p>Physics is the foundation of reality, a discipline that decodes the universe’s laws from quarks to quasars. My fascination began with a childhood telescope, revealing Jupiter’s moons and sparking a lifelong quest to understand cosmic phenomena. Physics blends mathematical elegance with empirical rigor, offering answers to profound questions about existence. My mission is to contribute to theories that reshape our view of the cosmos.</p>
+            </div>
+            <div class="subsection" id="entrepreneurship" aria-hidden="true">
+                <h3>Entrepreneurship Ideas</h3>
+                <p>I dream of merging physics with innovation. One vision is an open-source platform for quantum computing simulations, empowering students to explore quantum mechanics interactively. Another is a startup developing AI-driven cosmological models to accelerate discoveries in dark energy and galaxy formation. These ideas aim to make science accessible and transformative.</p>
+            </div>
+            <div class="subsection" id="musketeers" aria-hidden="true">
+                <h3>The 3 Musketeers: Experimental, Computational, and Theoretical Physics</h3>
+                <p>Physics thrives on three interconnected pillars. Experimental physics tests theories with data, like LIGO’s detection of gravitational waves. Computational physics models complex systems, such as galaxy evolution. Theoretical physics, my focus, crafts mathematical frameworks to predict phenomena like quantum entanglement. Their synergy drives scientific progress, and I’m passionate about contributing to all three.</p>
+            </div>
+        </section>
+        <section id="research-experience" data-aos="fade-up">
+            <h2>Research Experience</h2>
+            <div class="research-experience">
+                <div class="item">
+                    <h3>Quantum Gravity Group, University of Example</h3>
+                    <p><strong>Research Assistant, June 2022 – August 2023</strong></p>
+                    <p>Collaborated with the Quantum Gravity Group to investigate quantum entanglement in curved spacetime. Developed Python-based simulations using Qiskit to model entanglement dynamics near black holes, contributing to a preprint (arXiv:2506.23681). Analyzed quantum information loss in high-curvature environments and presented findings at the 2023 International Physics Symposium, earning recognition for innovative methodologies.</p>
+                </div>
+                <div class="item">
+                    <h3>Cosmology and Astrophysics Lab, Institute of Advanced Studies</h3>
+                    <p><strong>Graduate Researcher, September 2024 – Present</strong></p>
+                    <p>Leading cosmological data analysis using Planck satellite data to constrain inflationary models. Developed machine learning algorithms with TensorFlow to detect patterns in CMB temperature fluctuations, improving predictions for dark energy models. Currently drafting a manuscript for submission to The Astrophysical Journal, focusing on baryon acoustic oscillations.</p>
+                </div>
+            </div>
+        </section>
+        <section id="research" data-aos="fade-up">
+            <h2>Research Interests</h2>
+            <p>My research lies at the intersection of theoretical physics and observational data, aiming to unravel the universe’s fundamental mysteries through innovative approaches.</p>
+            <ul>
+                <li><strong>Quantum Mechanics</strong>: I explore quantum entanglement and quantum information theory, simulating multi-qubit systems to study Bell state correlations. My work aims to advance quantum computing and understand decoherence in complex quantum systems.</li>
+                <li><strong>Cosmology</strong>: Focused on cosmic inflation and dark energy, I analyze CMB data to constrain inflationary parameters and investigate baryon acoustic oscillations to understand the universe’s early evolution.</li>
+                <li><strong>Particle Physics</strong>: Using Monte Carlo simulations, I model particle collisions to probe new physics, with a focus on neutrino oscillations and matter-antimatter asymmetry.</li>
+                <li><strong>General Relativity</strong>: I analyze LIGO gravitational wave data to study black hole dynamics and explore modified gravity theories to explain cosmic acceleration without dark energy.</li>
+            </ul>
+        </section>
+        <section id="projects" data-aos="fade-up">
+            <h2>Projects</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Quantum Entanglement Simulation</h3>
+                    <p><strong>2023</strong></p>
+                    <p>Developed a Qiskit-based Python simulation to model quantum entanglement, generating Bell states and analyzing particle correlations with statistical visualizations.</p>
+                    <a href="https://github.com/krishnanjan/quantum-entanglement" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+                <div class="timeline-item">
+                    <h3>Cosmological Data Analysis</h3>
+                    <p><strong>2024</strong></p>
+                    <p>Analyzed Planck satellite CMB data to study early universe temperature fluctuations, using Python/Matplotlib for power spectrum visualizations and cosmological parameter constraints.</p>
+                    <a href="https://github.com/krishnanjan/cosmological-analysis" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+                <div class="timeline-item">
+                    <h3>Particle Physics Simulation</h3>
+                    <p><strong>2024</strong></p>
+                    <p>Built a Monte Carlo simulation in C++ and ROOT to model particle collisions in a simplified LHC environment, focusing on decay processes and event reconstruction.</p>
+                    <a href="https://github.com/krishnanjan/particle-simulation" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+                <div class="timeline-item">
+                    <h3>Gravitational Wave Analysis</h3>
+                    <p><strong>2025</strong></p>
+                    <p>Created a Python script to analyze LIGO gravitational wave signals, using Fourier transforms to identify waveform patterns and study binary system dynamics.</p>
+                    <a href="https://github.com/krishnanjan/gravitational-waves" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+            </div>
+        </section>
+        <section id="papers" data-aos="fade-up">
+            <h2>Papers & Publications</h2>
+            <div class="papers" id="arxiv-feed">
+                <!-- Populated by JavaScript -->
+            </div>
+            <p>Explore my publications on <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener">Google Scholar</a>.</p>
+        </section>
+        <section id="insights" data-aos="fade-up">
+            <h2>Insights & Thoughts</h2>
+            <div class="insights">
+                <div class="item">
+                    <h3>How Gravitational Waves Changed My Research</h3>
+                    <p>A reflection on LIGO’s impact on cosmology and my work on quantum information theory. The detection of gravitational waves opened new avenues for testing general relativity...</p>
+                    <a href="/blog/gravitational-waves" target="_blank" rel="noopener">Read More</a>
+                </div>
+                <div class="item">
+                    <h3>Why Quantum Computing Excites Me</h3>
+                    <p>Exploring the potential of quantum computing to revolutionize physics simulations and solve complex problems in cosmology...</p>
+                    <a href="/blog/quantum-computing" target="_blank" rel="noopener">Read More</a>
+                </div>
+            </div>
+        </section>
+        <section id="education" data-aos="fade-up">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>B.Sc. in Physics</h3>
+                    <p>University of Example, 2020–2024</p>
+                    <p>Graduated with honors, specializing in theoretical physics. Thesis: "Quantum Entanglement in Spin Systems."</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>M.Sc. in Theoretical Physics</h3>
+                    <p>Institute of Advanced Studies, 2024–Present</p>
+                    <p>Research focus: Cosmology and gravitational wave detection.</p>
+                </div>
+            </div>
+        </section>
+        <section id="hobbies" data-aos="fade-up">
+            <h2>Hobbies</h2>
+            <div class="hobbies">
+                <div class="item">
+                    <p><strong>Astrophotography</strong>: Capturing celestial wonders with a telescope and DSLR camera.</p>
+                    <div class="gallery">
+                        <img src="assets/astro1.jpg" alt="Jupiter captured through telescope" onclick="openLightbox('assets/astro1.jpg', 'Jupiter captured through telescope')" loading="lazy">
+                        <img src="assets/astro2.jpg" alt="Orion Nebula photograph" onclick="openLightbox('assets/astro2.jpg', 'Orion Nebula photograph')" loading="lazy">
+                    </div>
+                </div>
+                <div class="item">
+                    <p><strong>Science Fiction Reading</strong>: Inspired by the imaginative worlds of Isaac Asimov and Arthur C. Clarke.</p>
+                </div>
+                <div class="item">
+                    <p><strong>Coding</strong>: Developing simulations and visualizations to enhance physics research.</p>
+                </div>
+                <div class="item">
+                    <p><strong>Hiking</strong>: Exploring nature to reflect on the universe’s vast beauty.</p>
+                </div>
+            </div>
+        </section>
+        <section id="social" data-aos="fade-up">
+            <h2>Social Feed</h2>
+            <div class="social-feed" id="social-feed">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+        <section id="cv" data-aos="fade-up">
+            <h2>CV</h2>
+            <p>Download my detailed CV to explore my academic and research journey.</p>
+            <a href="assets/cv.pdf" class="cv-button" download aria-label="Download Krishnanjan Sil's CV" onclick="checkCVLink(event)">Download CV</a>
+            <div class="github-contributions">
+                <h3>My GitHub Contributions</h3>
+                <img src="https://ghchart.rshah.org/krishnanjan" alt="Krishnanjan Sil's GitHub contribution graph" loading="lazy">
+            </div>
+        </section>
+        <section id="contact" data-aos="fade-up">
+            <h2>Contact</h2>
+            <p>Let’s connect to discuss physics, research collaborations, or innovative ideas!</p>
+            <div class="contact-form" aria-label="Contact form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required aria-required="true" placeholder="Your name">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required aria-required="true" placeholder="Your email">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required aria-required="true" placeholder="Your message"></textarea>
+                <input type="hidden" name="_gotcha" style="display:none !important">
+                <button onclick="submitContactForm()">Send Message</button>
+            </div>
+            <div class="newsletter">
+                <h3>Stay Updated</h3>
+                <p>Subscribe to my newsletter for the latest research updates and insights.</p>
+                <div class="newsletter-form" aria-label="Newsletter signup">
+                    <label for="newsletter-email">Email:</label>
+                    <input type="email" id="newsletter-email" name="email" required aria-required="true" placeholder="Your email">
+                    <input type="hidden" name="_gotcha" style="display:none !important">
+                    <button onclick="submitNewsletter()">Subscribe</button>
+                </div>
+            </div>
+            <p>Email: <a href="mailto:krishnanjan.sil@example.com">krishnanjan.sil@example.com</a></p>
+            <div class="badges">
+                <a href="https://github.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/GitHub-krishnanjan-181717?style=flat-square&logo=github" alt="GitHub Profile"></a>
+                <a href="https://www.linkedin.com/in/krishnanjan-sil" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/LinkedIn-Krishnanjan%20Sil-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn Profile"></a>
+                <a href="https://x.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/X-@krishnanjan-000000?style=flat-square&logo=x" alt="X Profile"></a>
+                <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/ORCID-0000--0000--0000--0000-a6ce39?style=flat-square&logo=orcid" alt="ORCID Profile"></a>
+                <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/Google%20Scholar-Krishnanjan%20Sil-4285F4?style=flat-square&logo=google-scholar" alt="Google Scholar Profile"></a>
+            </div>
+        </section>
+    </main>
+    <footer role="contentinfo">
+        <p>© 2025 Krishnanjan Sil. All rights reserved.</p>
+        <p><a href="https://github.com/krishnanjan/krishnanjan.github.io" target="_blank" rel="noopener">View Source Code</a></p>
+    </footer>
+    <script>
+        // Initialize page with error handling
+        window.onload = function() {
+            try {
+                // Initialize Particles.js
+                if (typeof particlesJS !== 'undefined') {
+                    particlesJS('particles-js', {
+                        particles: {
+                            number: { value: 60, density: { enable: true, value_area: 800 } },
+                            color: { value: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff' },
+                            shape: { type: 'circle', stroke: { width: 0 } },
+                            opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1.5, opacity_min: 0.2 } },
+                            size: { value: 4, random: true, anim: { enable: true, speed: 3, size_min: 0.2 } },
+                            line_linked: { enable: true, distance: 120, color: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff', opacity: 0.5, width: 1.5 },
+                            move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out' }
+                        },
+                        interactivity: {
+                            detect_on: 'canvas',
+                            events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                            modes: { grab: { distance: 250, line_linked: { opacity: 0.7 } }, push: { particles_nb: 3 } }
+                        },
+                        retina_detect: true
+                    });
+                } else {
+                    console.warn('Particles.js not loaded.');
+                }
+
+                // Initialize AOS
+                if (typeof AOS !== 'undefined') {
+                    AOS.init({ duration: 1000, once: true });
+                } else {
+                    console.warn('AOS not loaded. Showing sections without animation.');
+                    document.querySelectorAll('section').forEach(section => {
+                        section.style.opacity = '1';
+                        section.style.display = 'block';
+                    });
+                }
+
+                // Initialize GSAP animations
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    gsap.registerPlugin(ScrollTrigger);
+                    gsap.from('header h1', { y: -100, opacity: 0, duration: 1, ease: 'power3.out' });
+                    gsap.from('header p', { y: 50, opacity: 0, duration: 1, delay: 0.5, ease: 'power3.out' });
+                    document.querySelectorAll('section').forEach(section => {
+                        gsap.from(section, {
+                            scrollTrigger: {
+                                trigger: section,
+                                start: 'top 80%',
+                                toggleActions: 'play none none none'
+                            },
+                            y: 50,
+                            opacity: 0,
+                            duration: 1,
+                            ease: 'power3.out'
+                        });
+                    });
+                    gsap.from('.item', {
+                        scrollTrigger: {
+                            trigger: '.item',
+                            start: 'top 90%',
+                            toggleActions: 'play none none none'
+                        },
+                        scale: 0.9,
+                        opacity: 0,
+                        duration: 0.8,
+                        stagger: 0.2,
+                        ease: 'back.out(1.7)'
+                    });
+                } else {
+                    console.warn('GSAP or ScrollTrigger not loaded. Showing content without animation.');
+                    document.querySelectorAll('section, .item').forEach(el => {
+                        el.style.opacity = '1';
+                        el.style.transform = 'none';
+                    });
+                }
+
+                // Fetch dynamic content
+                fetchArxivPapers();
+                fetchSocialFeed();
+            } catch (e) {
+                console.error('Initialization error:', e);
+                // Ensure content is visible even if initialization fails
+                document.querySelectorAll('section, .item').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.display = 'block';
+                    el.style.transform = 'none';
+                });
+            }
+        };
+
+        // Hamburger menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const isActive = navLinks.classList.contains('active');
+            hamburger.setAttribute('aria-expanded', isActive);
+            navLinks.setAttribute('aria-hidden', !isActive);
+            hamburger.textContent = isActive ? '×' : '☰';
+            if (typeof gsap !== 'undefined') {
+                gsap.to(navLinks, {
+                    x: isActive ? 0 : '-100%',
+                    duration: 0.3,
+                    ease: 'power3.inOut'
+                });
+            }
+        });
+        hamburger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                hamburger.click();
+            }
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                navLinks.setAttribute('aria-hidden', 'true');
+                hamburger.textContent = '☰';
+            });
+        });
+
+        // Theme toggle
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches && !localStorage.getItem('theme')) {
+            document.body.classList.remove('dark-mode');
+            document.body.classList.add('light-mode');
+            document.querySelector('.theme-toggle').textContent = 'Dark Mode';
+        }
+        const toggleButton = document.querySelector('.theme-toggle');
+        toggleButton.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            document.body.classList.toggle('dark-mode');
+            toggleButton.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+            updateParticleColors();
+        });
+
+        function updateParticleColors() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 60, density: { enable: true, value_area: 800 } },
+                        color: { value: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff' },
+                        shape: { type: 'circle', stroke: { width: 0 } },
+                        opacity: { value: 0.6, random: true, anim: { enable: true, speed: 1.5, opacity_min: 0.2 } },
+                        size: { value: 4, random: true, anim: { enable: true, speed: 3, size_min: 0.2 } },
+                        line_linked: { enable: true, distance: 120, color: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff', opacity: 0.5, width: 1.5 },
+                        move: { enable: true, speed: 3, direction: 'none', random: true, straight: false, out_mode: 'out' }
+                    },
+                    interactivity: {
+                        detect_on: 'canvas',
+                        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                        modes: { grab: { distance: 250, line_linked: { opacity: 0.7 } }, push: { particles_nb: 3 } }
+                    },
+                    retina_detect: true
+                });
+            }
+        }
+        if (localStorage.getItem('theme')) {
+            document.body.classList.remove('light-mode', 'dark-mode');
+            document.body.classList.add(localStorage.getItem('theme') + '-mode');
+            toggleButton.textContent = localStorage.getItem('theme') === 'light' ? 'Dark Mode' : 'Light Mode';
+        }
+
+        // Typed text animation
+        const typedPhrases = ["Theoretical Physicist", "Exploring Quantum Frontiers", "Cosmologist | Researcher | Innovator"];
+        let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+        function typeLoop() {
+            try {
+                document.getElementById('typed-text').innerHTML = currentPhrase.join('');
+                if (!isDeleting && j <= typedPhrases[i].length) {
+                    currentPhrase.push(typedPhrases[i][j++]);
+                } else if (isDeleting && j > 0) {
+                    currentPhrase.pop();
+                    j--;
+                }
+                if (j === typedPhrases[i].length) isDeleting = true;
+                if (j === 0 && isDeleting) {
+                    isDeleting = false;
+                    i = (i + 1) % typedPhrases.length;
+                }
+                setTimeout(typeLoop, isDeleting ? 60 : 100);
+            } catch (e) {
+                console.error('Typed text error:', e);
+            }
+        }
+        typeLoop();
+
+        // Font size selector
+        const fontSizeSelect = document.querySelector('#font-size');
+        fontSizeSelect.addEventListener('change', (e) => {
+            document.body.classList.remove('font-small', 'font-medium', 'font-large');
+            document.body.classList.add(`font-${e.target.value}`);
+            localStorage.setItem('fontSize', e.target.value);
+        });
+        if (localStorage.getItem('fontSize')) {
+            fontSizeSelect.value = localStorage.getItem('fontSize');
+            fontSizeSelect.dispatchEvent(new Event('change'));
+        }
+
+        // Subsection toggles
+        const toggles = document.querySelectorAll('.section-toggle');
+        const subsections = document.querySelectorAll('.subsection');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const sectionId = toggle.getAttribute('data-section');
+                subsections.forEach(sub => {
+                    sub.classList.remove('active');
+                    sub.setAttribute('aria-hidden', 'true');
+                });
+                const activeSub = document.getElementById(sectionId);
+                activeSub.classList.add('active');
+                activeSub.setAttribute('aria-hidden', 'false');
+                toggles.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-expanded', 'false');
+                });
+                toggle.classList.add('active');
+                toggle.setAttribute('aria-expanded', 'true');
+                if (typeof gsap !== 'undefined') {
+                    gsap.from(activeSub, { y: 20, opacity: 0, duration: 0.5, ease: 'power3.out' });
+                } else {
+                    activeSub.style.opacity = '1';
+                    activeSub.style.transform = 'none';
+                }
+            });
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle.click();
+                }
+            });
+        });
+
+        // Scroll handler for back-to-top
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            document.querySelector('.back-to-top').classList.toggle('show', scrollTop > 300);
+        });
+
+        // Header click animation
+        document.querySelector('header h1').addEventListener('click', () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.to('header h1', { scale: 1.1, duration: 0.3, yoyo: true, repeat: 1 });
+            }
+            alert("👨‍🔬 Fun Fact: My favorite equation is Schrödinger’s!");
+        });
+
+        // Lightbox functionality
+        function openLightbox(src, alt) {
+            try {
+                const lightbox = document.getElementById('lightbox');
+                const img = document.getElementById('lightbox-image');
+                img.src = src;
+                img.alt = alt;
+                lightbox.classList.add('active');
+                lightbox.focus();
+                if (typeof gsap !== 'undefined') {
+                    gsap.from('#lightbox-image', { scale: 0.8, opacity: 0, duration: 0.5, ease: 'back.out(1.7)' });
+                } else {
+                    img.style.opacity = '1';
+                    img.style.transform = 'none';
+                }
+            } catch (e) {
+                console.error('Lightbox error:', e);
+            }
+        }
+        function closeLightbox() {
+            try {
+                const lightbox = document.getElementById('lightbox');
+                if (typeof gsap !== 'undefined') {
+                    gsap.to('#lightbox-image', {
+                        scale: 0.8,
+                        opacity: 0,
+                        duration: 0.3,
+                        ease: 'power3.in',
+                        onComplete: () => {
+                            lightbox.classList.remove('active');
+                        }
+                    });
+                } else {
+                    lightbox.classList.remove('active');
+                }
+            } catch (e) {
+                console.error('Lightbox close error:', e);
+            }
+        }
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+                closeLightbox();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('lightbox').classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+
+        // Form submissions
+        function submitContactForm() {
+            try {
+                const email = document.getElementById('email').value;
+                const honeypot = document.querySelector('.contact-form input[name="_gotcha"]').value;
+                if (honeypot) {
+                    alert('Spam detected!');
+                    return false;
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    alert('Please enter a valid email address.');
+                    return false;
+                }
+                alert('Message sent successfully!');
+                document.querySelector('.contact-form').reset();
+                return true;
+            } catch (e) {
+                console.error('Contact form error:', e);
+                return false;
+            }
+        }
+        function submitNewsletter() {
+            try {
+                const email = document.getElementById('newsletter-email').value;
+                const honeypot = document.querySelector('.newsletter-form input[name="_gotcha"]').value;
+                if (honeypot) {
+                    alert('Spam detected!');
+                    return false;
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    alert('Please enter a valid email address.');
+                    return false;
+                }
+                alert('Subscribed successfully!');
+                document.querySelector('.newsletter-form').reset();
+                return true;
+            } catch (e) {
+                console.error('Newsletter form error:', e);
+                return false;
+            }
+        }
+        function checkCVLink(event) {
+            try {
+                const link = event.target.href;
+                fetch(link, { method: 'HEAD' })
+                    .catch(() => {
+                        event.preventDefault();
+                        alert('CV file is not available. Please contact me directly.');
+                    });
+            } catch (e) {
+                console.error('CV link check error:', e);
+            }
+        }
+
+        // Search functionality
+        const searchInput = document.getElementById('search');
+        searchInput.addEventListener('input', (e) => {
+            try {
+                const query = e.target.value.toLowerCase();
+                const sections = document.querySelectorAll('section');
+                sections.forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    const shouldShow = text.includes(query);
+                    section.style.display = shouldShow ? 'block' : 'none';
+                    if (typeof gsap !== 'undefined') {
+                        gsap.to(section, { opacity: shouldShow ? 1 : 0, duration: 0.3 });
+                    } else {
+                        section.style.opacity = shouldShow ? '1' : '0';
+                    }
+                });
+            } catch (e) {
+                console.error('Search error:', e);
+            }
+        });
+
+        // Fetch arXiv papers
+        async function fetchArxivPapers() {
+            try {
+                const response = await fetch('https://export.arxiv.org/api/query?search_query=au:Krishnanjan_Sil&max_results=5');
+                const data = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data, 'text/xml');
+                const entries = xmlDoc.getElementsByTagName('entry');
+                const feed = document.getElementById('arxiv-feed');
+                if (entries.length === 0) {
+                    feed.innerHTML = '<div class="item"><p>No papers found.</p></div>';
+                    return;
+                }
+                const papers = Array.from(entries).map(entry => {
+                    const title = entry.getElementsByTagName('title')[0]?.textContent || 'Untitled';
+                    const id = entry.getElementsByTagName('id')[0]?.textContent?.split('/abs/')[1] || '#';
+                    const summary = entry.getElementsByTagName('summary')[0]?.textContent || 'No summary available.';
+                    return { title, link: `https://arxiv.org/abs/${id}`, summary: summary.substring(0, 100) + '...' };
+                });
+                feed.innerHTML = papers.map(paper => `
+                    <div class="item">
+                        <h3>${paper.title}</h3>
+                        <p>${paper.summary}</p>
+                        <a href="${paper.link}" target="_blank" rel="noopener">${paper.link.includes('#') ? 'Draft Coming Soon' : 'View on arXiv'}</a>
+                    </div>
+                `).join('');
+                if (typeof gsap !== 'undefined') {
+                    gsap.from('#arxiv-feed .item', { y: 20, opacity: 0, duration: 0.5, stagger: 0.2, ease: 'power3.out' });
+                } else {
+                    document.querySelectorAll('#arxiv-feed .item').forEach(item => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'none';
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching arXiv papers:', error);
+                document.getElementById('arxiv-feed').innerHTML = '<div class="item"><p>Unable to load papers at this time. Please try again later.</p></div>';
+            }
+        }
+
+        // Fetch social feed (mock due to X API restrictions)
+        async function fetchSocialFeed() {
+            try {
+                const mockTweets = [
+                    { text: "Excited to share my latest research on quantum entanglement! Check it out on arXiv. #Physics", link: "https://x.com/krishnanjan/status/123" },
+                    { text: "Just captured a stunning image of the Orion Nebula last night! 🌌 #Astrophotography", link: "https://x.com/krishnanjan/status/124" }
+                ];
+                const feed = document.getElementById('social-feed');
+                feed.innerHTML = mockTweets.map(tweet => `
+                    <div class="item">
+                        <p>${tweet.text}</p>
+                        <a href="${tweet.link}" target="_blank" rel="noopener">View on X</a>
+                    </div>
+                `).join('');
+                if (typeof gsap !== 'undefined') {
+                    gsap.from('#social-feed .item', { y: 20, opacity: 0, duration: 0.5, stagger: 0.2, ease: 'power3.out' });
+                } else {
+                    document.querySelectorAll('#social-feed .item').forEach(item => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'none';
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching social feed:', error);
+                document.getElementById('social-feed').innerHTML = '<div class="item"><p>Unable to load social feed at this time. Please try again later.</p></div>';
+            }
+        }
+
+        // Structured data
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Krishnanjan Sil",
+            "jobTitle": "Theoretical Physicist",
+            "url": "https://krishnanjan.github.io",
+            "sameAs": [
+                "https://github.com/krishnanjan",
+                "https://www.linkedin.com/in/krishnanjan-sil",
+                "https://x.com/krishnanjan",
+                "https://orcid.org/0000-0000-0000-0000",
+                "https://scholar.google.com/citations?user=your-google-scholar-id"
+            ],
+            "description": "Krishnanjan Sil is a theoretical physicist specializing in quantum mechanics, cosmology, and particle physics.",
+            "email": "mailto:krishnanjan.sil@example.com",
+            "alumniOf": [
+                { "@type": "CollegeOrUniversity", "name": "University of Example", "sameAs": "https://www.example.edu" },
+                { "@type": "CollegeOrUniversity", "name": "Institute of Advanced Studies", "sameAs": "https://www.ias.edu" }
+            ]
+        };
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+        // Navigation keyboard accessibility
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+        navLinksItems.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Intersection Observer for visibility
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.style.opacity = '1';
+                    entry.target.style.display = 'block';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
