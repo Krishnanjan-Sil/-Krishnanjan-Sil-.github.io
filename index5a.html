@@ -1225,4 +1225,382 @@
                 'about-text': 'Ich bin Krishnanjan Sil, ein theoretischer Physiker, der von den tiefsten Geheimnissen des Universums fasziniert ist. Von der Beobachtung der Sterne in meiner Kindheit bis hin zur Lösung komplexer Gleichungen heute wird mein Weg von einer Leidenschaft für Quantenmechanik, Kosmologie und Teilchenphysik angetrieben. Ich strebe danach, theoretische Modelle mit empirischen Entdeckungen zu verbinden und die Grenzen unseres kosmischen Verständnisses zu erweitern. Wenn ich nicht in die Forschung vertieft bin, fange ich den Nachthimmel durch Astrofotografie ein, tauche in Science-Fiction-Romane ein oder wandere, um die Größe der Natur zu reflektieren.',
                 'my-life-title': 'Mein Leben',
                 'why-physics-title': 'Warum Physik?',
-                'why-physics-text': 'Physik ist das Fundament der Realität, eine Disziplin, die die Gesetze des Universums von Quarks bis zu Quasaren entschlüsselt. Meine F
+                'why-physics-text': 'Physik ist das Fundament der Realität, eine Disziplin, die die Gesetze des Universums von Quarks bis zu Quasaren entschlüsselt. Meine F'
+            }
+// Initialize on load
+        window.addEventListener('load', () => {
+            // Particle.js initialization
+            if (window.innerWidth > 768 && typeof particlesJS !== 'undefined') {
+                try {
+                    particlesJS('particles-js', {
+                        particles: {
+                            number: { value: 40, density: { enable: true, value_area: 1000 } },
+                            color: { value: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff' },
+                            shape: { type: 'circle' },
+                            opacity: { value: 0.4, random: true },
+                            size: { value: 2.5, random: true },
+                            line_linked: { enable: true, distance: 80, color: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff', opacity: 0.3, width: 1 },
+                            move: { enable: true, speed: 1.5, direction: 'none', random: true }
+                        },
+                        interactivity: {
+                            events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                            modes: { grab: { distance: 120, line_linked: { opacity: 0.4 } }, push: { particles_nb: 3 } }
+                        },
+                        retina_detect: true
+                    });
+                } catch (e) {
+                    console.warn('Particle.js initialization failed:', e);
+                }
+            }
+            // Initialize AOS
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 600, once: false });
+            }
+            updateVisitorCount();
+            fetchArxivPapers();
+            updatePlotly();
+            typeLoop();
+        });
+
+        // Theme handling
+        const toggleButton = document.querySelector('.theme-toggle');
+        const contrastSelect = document.querySelector('#contrast');
+        const updateTheme = () => {
+            document.body.classList.remove('light-mode', 'dark-mode', 'high-contrast');
+            const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            const contrast = localStorage.getItem('contrast') || 'default';
+            document.body.classList.add(theme + '-mode');
+            if (contrast === 'high') document.body.classList.add('high-contrast');
+            toggleButton.textContent = theme === 'light' ? 'Dark Mode' : 'Light Mode';
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 40, density: { enable: true, value_area: 1000 } },
+                        color: { value: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff' },
+                        shape: { type: 'circle' },
+                        opacity: { value: 0.4, random: true },
+                        size: { value: 2.5, random: true },
+                        line_linked: { enable: true, distance: 80, color: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff', opacity: 0.3, width: 1 },
+                        move: { enable: true, speed: 1.5, direction: 'none', random: true }
+                    },
+                    interactivity: {
+                        events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                        modes: { grab: { distance: 120, line_linked: { opacity: 0.4 } }, push: { particles_nb: 3 } }
+                    },
+                    retina_detect: true
+                });
+            }
+            updatePlotly();
+        };
+        toggleButton.addEventListener('click', () => {
+            const theme = document.body.classList.contains('light-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+            updateTheme();
+        });
+        contrastSelect.addEventListener('change', () => {
+            localStorage.setItem('contrast', contrastSelect.value);
+            updateTheme();
+        });
+        if (localStorage.getItem('theme') || window.matchMedia('(prefers-color-scheme: light)').matches) updateTheme();
+
+        // Font size handling
+        const fontSizeSelect = document.querySelector('#font-size');
+        fontSizeSelect.addEventListener('change', () => {
+            document.body.classList.remove('font-small', 'font-medium', 'font-large');
+            document.body.classList.add('font-' + fontSizeSelect.value);
+            localStorage.setItem('fontSize', fontSizeSelect.value);
+        });
+        if (localStorage.getItem('fontSize')) {
+            document.body.classList.add('font-' + localStorage.getItem('fontSize'));
+            fontSizeSelect.value = localStorage.getItem('fontSize');
+        }
+
+        // Language selector and typewriter effect
+        let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+        let typedPhrases = translations.en.header;
+        const languageSelect = document.querySelector('#language');
+        languageSelect.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            localStorage.setItem('language', lang);
+            typedPhrases = translations[lang]?.header || translations.en.header;
+            document.querySelector('#about-text').textContent = translations[lang]?.about || translations.en.about;
+            i = 0; j = 0; currentPhrase = []; isDeleting = false;
+        });
+        if (localStorage.getItem('language')) {
+            languageSelect.value = localStorage.getItem('language');
+            languageSelect.dispatchEvent(new Event('change'));
+        }
+        function typeLoop() {
+            document.getElementById('typed-text').innerHTML = currentPhrase.join('');
+            if (!isDeleting && j <= typedPhrases[i].length) {
+                currentPhrase.push(typedPhrases[i][j++]);
+            } else if (isDeleting && j > 0) {
+                currentPhrase.pop();
+                j--;
+            }
+            if (j === typedPhrases[i].length) isDeleting = true;
+            if (j === 0 && isDeleting) {
+                isDeleting = false;
+                i = (i + 1) % typedPhrases.length;
+            }
+            setTimeout(typeLoop, isDeleting ? 60 : 100);
+        }
+
+        // Visitor counter
+        async function updateVisitorCount() {
+            try {
+                const response = { count: parseInt(localStorage.getItem('visitorCount') || '0') + 1 };
+                localStorage.setItem('visitorCount', response.count);
+                document.getElementById('visitor-count').textContent = response.count;
+            } catch (error) {
+                console.error('Error updating visitor count:', error);
+            }
+        }
+
+        // Subsection toggles
+        const toggles = document.querySelectorAll('.section-toggle');
+        const subsections = document.querySelectorAll('.subsection');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const sectionId = toggle.getAttribute('data-section');
+                subsections.forEach(sub => {
+                    sub.classList.remove('active');
+                    sub.setAttribute('aria-hidden', 'true');
+                });
+                const activeSub = document.getElementById(sectionId);
+                activeSub.classList.add('active');
+                activeSub.setAttribute('aria-hidden', 'false');
+                toggles.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-expanded', 'false');
+                });
+                toggle.classList.add('active');
+                toggle.setAttribute('aria-expanded', 'true');
+            });
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle.click();
+                }
+            });
+        });
+
+        // Scroll progress and back-to-top
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = scrollPercent + '%';
+            progressBar.setAttribute('aria-valuenow', Math.round(scrollPercent));
+            document.querySelector('.back-to-top').classList.toggle('show', scrollTop > 300);
+        });
+
+        // Easter egg
+        document.querySelector('#header-name').addEventListener('click', () => {
+            alert("👨‍🔬 Fun Fact: My favorite equation is Schrödinger’s!");
+        });
+
+        // Lightbox and CV modal
+        function openLightbox(src, alt) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-image');
+            img.src = src;
+            img.alt = alt;
+            lightbox.classList.add('active');
+            lightbox.focus();
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+                closeLightbox();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('lightbox').classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+        function openCVModal() {
+            document.getElementById('cv-modal').classList.add('active');
+            document.querySelector('.cv-modal-content').focus();
+        }
+        function closeCVModal() {
+            document.getElementById('cv-modal').classList.remove('active');
+        }
+        document.getElementById('cv-modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('cv-modal') || e.target.classList.contains('cv-modal-close')) {
+                closeCVModal();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('cv-modal').classList.contains('active')) {
+                closeCVModal();
+            }
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('search');
+        const searchResults = document.getElementById('search-results');
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase().trim();
+            searchResults.innerHTML = '';
+            if (query.length > 2) {
+                const sections = document.querySelectorAll('section');
+                sections.forEach(section => {
+                    const text = section.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        const li = document.createElement('li');
+                        li.textContent = section.querySelector('h2').textContent;
+                        li.addEventListener('click', () => {
+                            section.scrollIntoView({ behavior: 'smooth' });
+                            searchResults.classList.remove('active');
+                            searchInput.value = '';
+                        });
+                        searchResults.appendChild(li);
+                    }
+                });
+                searchResults.classList.add('active');
+            } else {
+                searchResults.classList.remove('active');
+            }
+        });
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchResults.classList.remove('active');
+            }
+        });
+
+        // Feedback widget
+        function submitFeedback(response) {
+            localStorage.setItem('feedback', response);
+            alert(`Thank you for your feedback: ${response}`);
+            document.querySelector('.feedback-widget').style.display = 'none';
+        }
+
+        // Form validation
+        function validateForm() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const honeypot = document.querySelector('input[name="_gotcha"]').value;
+            if (honeypot) {
+                alert('Spam detected!');
+                return false;
+            }
+            if (name && email && message) {
+                alert('Message sent successfully!');
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('message').value = '';
+                return true;
+            }
+            alert('Please fill in all fields.');
+            return false;
+        }
+
+        // CV link check
+        function checkCVLink(event) {
+            const link = event.target.href;
+            fetch(link, { method: 'HEAD' })
+                .catch(() => {
+                    event.preventDefault();
+                    alert('CV file is not available. Please contact me directly.');
+                });
+        }
+
+        // Plotly chart
+        function updatePlotly() {
+            if (typeof Plotly !== 'undefined') {
+                const x = Array.from({ length: 100 }, (_, i) => i / 10);
+                const y = x.map(t => Math.sin(t) * Math.exp(-0.1 * t));
+                const data = [{
+                    x: x,
+                    y: y,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: 'Entanglement Correlation',
+                    line: { color: document.body.classList.contains('light-mode') ? '#004aad' : '#7ba3ff' }
+                }];
+                const layout = {
+                    title: { text: 'Quantum Entanglement Simulation', font: { size: 14 } },
+                    xaxis: { title: 'Time (s)' },
+                    yaxis: { title: 'Correlation' },
+                    margin: { l: 40, r: 20, t: 40, b: 40 },
+                    plot_bgcolor: document.body.classList.contains('light-mode') ? '#f0f4ff' : '#1a2026',
+                    paper_bgcolor: document.body.classList.contains('light-mode') ? '#ffffff' : '#2e3a4a',
+                    font: { color: document.body.classList.contains('light-mode') ? '#2a3a4a' : '#f5f6fa' }
+                };
+                Plotly.newPlot('quantum-plot', data, layout, { responsive: true });
+            }
+        }
+
+        // Mock arXiv feed
+        async function fetchArxivPapers() {
+            try {
+                const mockResponse = [
+                    { title: 'Entanglement in Multi-Qubit Systems', link: 'https://arxiv.org/abs/2506.23681', description: 'A theoretical study on scalable entanglement in multi-qubit systems for quantum computing applications.' },
+                    { title: 'Cosmic Inflation Models', link: '#', description: 'A comprehensive review of inflationary models and their CMB implications, focusing on scalar field dynamics. (Draft in Progress)' }
+                ];
+                const feed = document.getElementById('arxiv-feed');
+                feed.innerHTML = mockResponse.map(paper => `
+                    <div class="item">
+                        <h3>${paper.title}</h3>
+                        <p>${paper.description}</p>
+                        <a href="${paper.link}" target="_blank" rel="noopener">${paper.link.includes('#') ? 'Draft Coming Soon' : 'View on arXiv'}</a>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching arXiv papers:', error);
+                document.getElementById('arxiv-feed').innerHTML += '<p>Failed to load latest papers.</p>';
+            }
+        }
+
+        // Structured data for SEO
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Krishnanjan Sil",
+            "jobTitle": "Theoretical Physicist",
+            "url": "https://krishnanjan.github.io",
+            "sameAs": [
+                "https://github.com/krishnanjan",
+                "https://www.linkedin.com/in/krishnanjan-sil",
+                "https://x.com/krishnanjan",
+                "https://orcid.org/0000-0000-0000-0000",
+                "https://scholar.google.com/citations?user=your-google-scholar-id"
+            ]
+        };
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+        // Keyboard navigation for nav links
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Lazy-load sections with IntersectionObserver
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
