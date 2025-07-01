@@ -1,43 +1,4 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -55,7 +16,6 @@
     <meta name="twitter:title" content="Krishnanjan Sil - Theoretical Physicist">
     <meta name="twitter:description" content="Portfolio showcasing research in quantum mechanics, cosmology, and particle physics.">
     <meta name="twitter:image" content="https://krishnanjan.github.io/assets/og-image.jpg">
-    <meta name="twitter:creator" content="@krishnanjan">
     <title>Krishnanjan Sil - Theoretical Physicist</title>
     <link rel="icon" type="image/png" href="assets/favicon.png" loading="lazy">
     <link rel="canonical" href="https://krishnanjan.github.io">
@@ -67,6 +27,38 @@
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.warn('Particle.js failed to load')"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
     <style>
         :root {
             --primary: #7ba3ff;
@@ -235,20 +227,25 @@
             margin: 0 auto;
             padding: 1em;
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
+            position: relative;
+            flex-wrap: wrap;
+            gap: 1em;
         }
         .nav-links {
             display: flex;
-            gap: 2.5em;
+            gap: 1em;
             transition: transform 0.3s ease;
+            flex-wrap: wrap;
+            justify-content: flex-start;
         }
         nav a {
             color: var(--contrast-text);
             text-decoration: none;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 1.2em;
+            font-size: 0.9em;
             transition: color 0.4s, transform 0.4s;
             position: relative;
         }
@@ -276,11 +273,7 @@
             font-size: 2em;
             cursor: pointer;
             color: var(--contrast-text);
-            z-index: 1001;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2.5em;
+            z-index: 1002;
         }
         .nav-links.active {
             transform: translateX(0);
@@ -296,11 +289,14 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background: inherit;
+                background: rgba(50, 60, 80, 0.95); /* Lighter background for visibility */
                 padding: 1em;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3);
                 transform: translateX(-100%);
                 transition: transform 0.3s ease-in-out;
+            }
+            body.light-mode .nav-links {
+                background: rgba(100, 150, 225, 0.95); /* Adjusted for light mode */
             }
             .nav-links.active {
                 display: flex;
@@ -308,17 +304,21 @@
             }
             .nav-links a {
                 padding: 0.5em 0;
-                font-size: 1.5em;
+                font-size: 1em; /* Slightly smaller font size for mobile */
                 text-align: center;
+                color: #ffffff; /* High contrast color for visibility */
+            }
+            body.light-mode .nav-links a {
+                color: #002d72; /* High contrast for light mode */
             }
         }
         .controls {
             position: fixed;
-            top: 1.5em;
-            right: 1.5em;
+            top: 1em;
+            right: 1em;
             display: flex;
             align-items: center;
-            gap: 1.2em;
+            gap: 1em;
             z-index: 1001;
         }
         .font-size-selector select {
@@ -389,7 +389,7 @@
             padding: 0 var(--spacing);
             position: relative;
             z-index: 10;
-            opacity: 1 !important; /* Ensure container is always visible */
+            opacity: 1 !important;
         }
         section {
             margin-bottom: 7em;
@@ -399,8 +399,8 @@
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
-            display: block !important; /* Ensure sections are visible */
-            opacity: 1 !important; /* Override animation hiding */
+            display: block !important;
+            opacity: 1 !important;
         }
         section::before {
             content: '';
@@ -414,7 +414,7 @@
             z-index: -1;
         }
         section.visible {
-            opacity: 1 !important; /* Ensure visibility when intersected */
+            opacity: 1 !important;
         }
         h2 {
             font-family: 'Montserrat', sans-serif;
@@ -497,7 +497,7 @@
             color: #fff;
             box-shadow: var(--shadow);
         }
-        .papers, .research-experience, .hobbies, .my-life, .insights, .social-feed {
+        .papers, .research-experience, .hobbies, .my-life, .insights {
             display: grid;
             gap: 3.5em;
             grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -509,7 +509,7 @@
             transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
             overflow: hidden;
-            opacity: 1 !important; /* Ensure items are visible */
+            opacity: 1 !important;
         }
         .item::before {
             content: '';
@@ -799,8 +799,8 @@
             header p#typed-text { font-size: 1.3em; }
             .container { margin-top: 5em; padding: 0 2em; }
             section { padding: 2.5em; }
-            .papers, .research-experience, .hobbies, .my-life, .insights, .social-feed { grid-template-columns: 1fr; }
-            .controls { flex-direction: column; align-items: flex-end; gap: 1em; top: 0.8em; }
+            .papers, .research-experience, .hobbies, .my-life, .insights { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; align-items: flex-end; gap: 0.8em; top: 0.8em; right: 0.8em; }
             .back-to-top { bottom: 1.5em; right: 1.5em; }
             .timeline::before { left: 20px; }
             .timeline-item { width: 100%; left: 0; text-align: left; padding-left: 40px; }
@@ -813,7 +813,7 @@
             header p#typed-text { font-size: 1.1em; }
             .container { padding: 0 1.8em; }
             h2 { font-size: 2em; }
-            .controls { top: 0.5em; }
+            .controls { top: 0.5em; right: 0.5em; }
         }
     </style>
 </head>
@@ -855,7 +855,6 @@
                 <a href="#insights">Insights</a>
                 <a href="#education">Education</a>
                 <a href="#hobbies">Hobbies</a>
-                <a href="#social">Social Feed</a>
                 <a href="#cv">CV</a>
                 <a href="#contact">Contact</a>
             </div>
@@ -953,12 +952,12 @@
                 <div class="item">
                     <h3>How Gravitational Waves Changed My Research</h3>
                     <p>A reflection on LIGO’s impact on cosmology and my work on quantum information theory. The detection of gravitational waves opened new avenues for testing general relativity...</p>
-                    <a href="/blog/gravitational-waves" target="_blank" rel="noopener">Read More</a>
+                    <a href="javascript:void(0)" onclick="loadBlogPage('gravitational-waves', 2)" rel="noopener">Read More</a>
                 </div>
                 <div class="item">
                     <h3>Why Quantum Computing Excites Me</h3>
                     <p>Exploring the potential of quantum computing to revolutionize physics simulations and solve complex problems in cosmology...</p>
-                    <a href="/blog/quantum-computing" target="_blank" rel="noopener">Read More</a>
+                    <a href="javascript:void(0)" onclick="loadBlogPage('quantum-computing', 2)" rel="noopener">Read More</a>
                 </div>
             </div>
         </section>
@@ -998,12 +997,6 @@
                 </div>
             </div>
         </section>
-        <section id="social" data-aos="fade-up">
-            <h2>Social Feed</h2>
-            <div class="social-feed" id="social-feed">
-                <!-- Populated by JavaScript -->
-            </div>
-        </section>
         <section id="cv" data-aos="fade-up">
             <h2>CV</h2>
             <p>Download my detailed CV to explore my academic and research journey.</p>
@@ -1040,7 +1033,6 @@
             <div class="badges">
                 <a href="https://github.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/GitHub-krishnanjan-181717?style=flat-square&logo=github" alt="GitHub Profile"></a>
                 <a href="https://www.linkedin.com/in/krishnanjan-sil" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/LinkedIn-Krishnanjan%20Sil-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn Profile"></a>
-                <a href="https://x.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/X-@krishnanjan-000000?style=flat-square&logo=x" alt="X Profile"></a>
                 <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/ORCID-0000--0000--0000--0000-a6ce39?style=flat-square&logo=orcid" alt="ORCID Profile"></a>
                 <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/Google%20Scholar-Krishnanjan%20Sil-4285F4?style=flat-square&logo=google-scholar" alt="Google Scholar Profile"></a>
             </div>
@@ -1128,10 +1120,8 @@
 
                 // Fetch dynamic content
                 fetchArxivPapers();
-                fetchSocialFeed();
             } catch (e) {
                 console.error('Initialization error:', e);
-                // Ensure content is visible even if initialization fails
                 document.querySelectorAll('section, .item').forEach(el => {
                     el.style.opacity = '1';
                     el.style.display = 'block';
@@ -1402,6 +1392,17 @@
             }
         }
 
+        // Blog page navigation
+        function loadBlogPage(blogId, page) {
+            try {
+                const baseUrl = `/blog/${blogId}`;
+                const newUrl = `${baseUrl}?page=${page}`;
+                window.location.href = newUrl;
+            } catch (e) {
+                console.error('Blog navigation error:', e);
+            }
+        }
+
         // Search functionality
         const searchInput = document.getElementById('search');
         searchInput.addEventListener('input', (e) => {
@@ -1463,34 +1464,6 @@
             }
         }
 
-        // Fetch social feed (mock due to X API restrictions)
-        async function fetchSocialFeed() {
-            try {
-                const mockTweets = [
-                    { text: "Excited to share my latest research on quantum entanglement! Check it out on arXiv. #Physics", link: "https://x.com/krishnanjan/status/123" },
-                    { text: "Just captured a stunning image of the Orion Nebula last night! 🌌 #Astrophotography", link: "https://x.com/krishnanjan/status/124" }
-                ];
-                const feed = document.getElementById('social-feed');
-                feed.innerHTML = mockTweets.map(tweet => `
-                    <div class="item">
-                        <p>${tweet.text}</p>
-                        <a href="${tweet.link}" target="_blank" rel="noopener">View on X</a>
-                    </div>
-                `).join('');
-                if (typeof gsap !== 'undefined') {
-                    gsap.from('#social-feed .item', { y: 20, opacity: 0, duration: 0.5, stagger: 0.2, ease: 'power3.out' });
-                } else {
-                    document.querySelectorAll('#social-feed .item').forEach(item => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'none';
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching social feed:', error);
-                document.getElementById('social-feed').innerHTML = '<div class="item"><p>Unable to load social feed at this time. Please try again later.</p></div>';
-            }
-        }
-
         // Structured data
         const structuredData = {
             "@context": "https://schema.org",
@@ -1501,7 +1474,6 @@
             "sameAs": [
                 "https://github.com/krishnanjan",
                 "https://www.linkedin.com/in/krishnanjan-sil",
-                "https://x.com/krishnanjan",
                 "https://orcid.org/0000-0000-0000-0000",
                 "https://scholar.google.com/citations?user=your-google-scholar-id"
             ],
