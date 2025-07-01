@@ -1,565 +1,719 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krishnanjan Sil - Theoretical Physicist</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #0a0a23;
-            color: #e0e0e0;
-            overflow-x: hidden;
-        }
-        /* Starry Background */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            z-index: -1;
-            animation: twinkle 5s infinite;
-        }
-        .stars::before, .stars::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"><circle cx="2" cy="2" r="1" fill="white"/></svg>') repeat;
-            opacity: 0.3;
-        }
-        .stars::after {
-            animation: twinkle 7s infinite;
-            background-size: 3px 3px;
-            opacity: 0.5;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-        header {
-            background: linear-gradient(180deg, rgba(0,0,50,0.8), transparent);
-            text-align: center;
-            padding: 3em 0;
-            position: relative;
-            animation: fadeIn 2s ease-in;
-        }
-        header h1 {
-            font-size: 3em;
-            margin: 0;
-            color: #fff;
-            text-shadow: 0 0 10px #00f;
-        }
-        header p {
-            font-size: 1.3em;
-            color: #a0a0ff;
-            margin: 0.5em 0;
-        }
-        nav {
-            background: rgba(0,0,30,0.9);
-            padding: 1em 0;
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        nav a {
-            color: #a0a0ff;
-            margin: 0 1.5em;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-        nav a:hover {
-            color: #fff;
-            text-shadow: 0 0 5px #00f;
-        }
-        .container {
-            max-width: 900px;
-            margin: 2em auto;
-            padding: 0 1em;
-        }
-        section {
-            margin-bottom: 3em;
-            background: rgba(255,255,255,0.05);
-            padding: 2em;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,255,0.2);
-            animation: slideIn 1s ease-out;
-        }
-        h2 {
-            color: #a0a0ff;
-            border-bottom: 2px solid #00f;
-            padding-bottom: 0.3em;
-            font-size: 1.8em;
-        }
-        p, li {
-            line-height: 1.7;
-            color: #d0d0d0;
-        }
-        .projects, .papers, .education, .hobbies {
-            display: grid;
-            gap: 1.5em;
-        }
-        .item {
-            background: rgba(255,255,255,0.1);
-            padding: 1.5em;
-            border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(0,0,255,0.3);
-        }
-        .item a {
-            color: #00f;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .item a:hover {
-            text-decoration: underline;
-            color: #66f;
-        }
-        .cv-button {
-            display: inline-block;
-            padding: 0.8em 1.5em;
-            background: #00f;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-        .cv-button:hover {
-            background: #66f;
-        }
-        footer {
-            background: rgba(0,0,30,0.9);
-            text-align: center;
-            padding: 1.5em 0;
-            color: #a0a0ff;
-        }
-        footer a {
-            color: #66f;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @media (max-width: 600px) {
-            header h1 { font-size: 2em; }
-            header p { font-size: 1em; }
-            nav a { display: block; margin: 0.5em 0; }
-            section { padding: 1em; }
-        }
-    </style>
-</head>
-<body>
-    <div class="stars"></div>
-    <header>
-        <h1>Krishnanjan Sil</h1>
-        <p>Aspiring Theoretical Physicist | Exploring the Cosmos</p>
-    </header>
-    <nav>
-        <a href="#about">About</a>
-        <a href="#research">Research Interests</a>
-        <a href="#projects">Projects</a>
-        <a href="#papers">Papers</a>
-        <a href="#education">Education</a>
-        <a href="#hobbies">Hobbies</a>
-        <a href="#cv">CV</a>
-        <a href="#contact">Contact</a>
-    </nav>
-    <div class="container">
-        <section id="about">
-            <h2>About Me</h2>
-            <p>I am Krishnanjan Sil, an aspiring theoretical physicist driven by a passion to understand the fundamental laws of the universe. My journey in physics began with a fascination for the stars and has evolved into a deep interest in unraveling the mysteries of quantum mechanics, cosmology, and particle physics. I aim to contribute to cutting-edge research that bridges theoretical insights with observational data.</p>
-        </section>
-        <section id="research">
-            <h2>Research Interests</h2>
-            <ul>
-                <li><strong>Quantum Mechanics</strong>: Exploring quantum entanglement, superposition, and quantum information theory.</li>
-                <li><strong>Cosmology</strong>: Investigating the early universe, cosmic inflation, and dark energy.</li>
-                <li><strong>Particle Physics</strong>: Studying fundamental particles and their interactions, particularly in high-energy environments.</li>
-                <li><strong>General Relativity</strong>: Analyzing gravitational waves and black hole dynamics.</li>
-            </ul>
-        </section>
-        <section id="projects">
-            <h2>Projects</h2>
-            <div class="projects">
-                <div class="item">
-                    <h3>Quantum Entanglement Simulation</h3>
-                    <p>Developed a Python-based simulation using Qiskit to model quantum entanglement. The project demonstrates Bell state generation and measures correlations between entangled particles.</p>
-                    <a href="https://github.com/krishnanjan/quantum-entanglement" target="_blank">View on GitHub</a>
-                </div>
-                <div class="item">
-                    <h3>Cosmological Data Analysis</h3>
-                    <p>Analyzed cosmic microwave background (CMB) data from the Planck satellite to study temperature fluctuations in the early universe. Built visualizations using Python and Matplotlib.</p>
-                    <a href="https://github.com/krishnanjan/cosmological-analysis" target="_blank">View on GitHub</a>
-                </div>
-                <div class="item">
-                    <h3>Particle Physics Simulation</h3>
-                    <p>Created a Monte Carlo simulation of particle collisions in a simplified LHC environment using C++ and the ROOT framework. Focused on decay processes and detection efficiencies.</p>
-                    <a href="https://github.com/krishnanjan/particle-simulation" target="_blank">View on GitHub</a>
-                </div>
-                <div class="item">
-                    <h3>Gravitational Wave Analysis</h3>
-                    <p>Developed a Python script to analyze gravitational wave signals from LIGO data, applying Fourier transforms to identify waveform patterns.</p>
-                    <a href="https://github.com/krishnanjan/gravitational-waves" target="_blank">View on GitHub</a>
-                </div>
-            </div>
-        </section>
-        <section id="papers">
-            <h2>Papers & Publications</h2>
-            <div class="papers">
-                <div class="item">
-                    <h3>"Entanglement in Multi-Qubit Systems" (In Progress)</h3>
-                    <p>A theoretical study on the scalability of entanglement in multi-qubit systems, submitted to arXiv.</p>
-                    <a href="https://arxiv.org/abs/1234.5678" target="_blank">Read on arXiv</a>
-                </div>
-                <div class="item">
-                    <h3>"Cosmic Inflation Models" (Draft)</h3>
-                    <p>A review of inflationary models in cosmology, focusing on their implications for CMB observations.</p>
-                    <a href="https://example.com/cosmic-inflation.pdf" target="_blank">View Draft</a>
-                </div>
-            </div>
-        </section>
-        <section id="education">
-            <h2>Education</h2>
-            <div class="education">
-                <div class="item">
-                    <h3>B.Sc. in Physics</h3>
-                    <p>University of Example, 2020–2024</p>
-                    <p>Graduated with honors, specializing in theoretical physics. Thesis: "Quantum Entanglement in Spin Systems."</p>
-                </div>
-                <div class="item">
-                    <h3>M.Sc. in Theoretical Physics (Ongoing)</h3>
-                    <p>Institute of Advanced Studies, 2024–Present</p>
-                    <p>Research focus: Cosmology and gravitational wave detection.</p>
-                </div>
-            </div>
-        </section>
-        <section id="hobbies">
-            <h2>Hobbies</h2>
-            <div class="hobbies">
-                <div class="item">
-                    <p><strong>Astrophotography</strong>: Capturing images of celestial objects using a telescope and DSLR camera.</p>
-                </div>
-                <div class="item">
-                    <p><strong>Science Fiction Reading</strong>: Enjoying works by Isaac Asimov and Arthur C. Clarke to inspire creative thinking in physics.</p>
-                </div>
-                <div class="item">
-                    <p><strong>Coding</strong>: Building simulations and visualizations to complement my physics research.</p>
-                </div>
-                <div class="item">
-                    <p><strong>Hiking</strong>: Exploring nature to reflect on the universe’s grandeur.</p>
-                </div>
-            </div>
-        </section>
-        <section id="cv">
-            <h2>CV</h2>
-            <p>Download my full CV to learn more about my academic and research experience.</p>
-            <a href="https://example.com/krishnanjan-sil-cv.pdf" target="_blank" class="cv-button">Download CV</a>
-        </section>
-        <section id="contact">
-            <h2>Contact</h2>
-            <p>Interested in discussing physics, research, or potential collaborations? Reach out to me!</p>
-            <p>Email: <a href="mailto:krishnanjan.sil@example.com">krishnanjan.sil@example.com</a></p>
-            <p>GitHub: <a href="https://github.com/krishnanjan" target="_blank">github.com/krishnanjan</a></p>
-            <p>LinkedIn: <a href="https://linkedin.com/in/krishnanjan-sil" target="_blank">linkedin.com/in/krishnanjan-sil</a></p>
-            <p>X: <a href="https://x.com/krishnanjan" target="_blank">x.com/krishnanjan</a></p>
-        </section>
-    </div>
-    <footer>
-        <p>© 2025 Krishnanjan Sil. All rights reserved.</p>
-        <p><a href="https://github.com/krishnanjan/krishnanjan.github.io" target="_blank">View Source Code</a></p>
-    </footer>
-</body>
-</html>
- -->
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for SEO and social sharing -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Krishnanjan Sil, an aspiring theoretical physicist specializing in quantum mechanics, cosmology, and particle physics.">
+    <meta name="description" content="Portfolio of Krishnanjan Sil, a theoretical physicist exploring quantum mechanics, cosmology, and particle physics.">
     <meta name="keywords" content="theoretical physics, quantum mechanics, cosmology, particle physics, Krishnanjan Sil">
     <meta name="author" content="Krishnanjan Sil">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph for social media previews -->
+    <meta property="og:title" content="Krishnanjan Sil - Theoretical Physicist">
+    <meta property="og:description" content="Explore the research, projects, and insights of Krishnannanjan Sil, a theoretical physicist passionate about quantum mechanics and cosmology.">
+    <meta property="og:image" content="https://krishnanjan.github.io/assets/og-image.jpg">
+    <meta property="og:url" content="https://krishnanjan.github.io">
+    <meta property="og:type" content="website">
+    <!-- Twitter Card for X sharing -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Krishnanjan Sil - Theoretical Physicist">
+    <meta name="twitter:description" content="Portfolio of a physicist exploring quantum mechanics and cosmology.">
+    <meta name="twitter:image" content="https://krishnanjan.github.io/assets/og-image.jpg">
+    <!-- Page title and favicon -->
     <title>Krishnanjan Sil - Theoretical Physicist</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/favicon.png" loading="lazy">
+    <!-- Google Fonts for typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto+Slab:wght@400;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <!-- AOS for scroll animations -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <!-- Plotly.js for interactive research demo -->
+    <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.30.0/plotly.min.js"></script>
+    <!-- Particle.js with fallback -->
+    <script defer src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" onerror="console.warn('Particle.js failed to load')"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <style>
-        /* Reset and Base Styles */
+        /* Define CSS custom properties for theming and maintainability */
+        :root {
+            --primary: #7ba3ff; /* Main accent color */
+            --secondary: #b3d4ff; /* Lighter accent for hover/focus */
+            --dark-bg: #0a0a23; /* Dark mode background */
+            --light-bg: linear-gradient(135deg, #e8f1ff 0%, #d4e2ff 100%); /* Light mode background */
+            --radius: 1rem; /* Border radius for consistency */
+            --shadow: 0 8px 20px rgba(0,0,255,0.4); /* Box shadow for depth */
+            --spacing: 1.8em; /* Consistent spacing unit */
+            --text-light: #f5f6fa; /* Light mode text */
+            --text-dark: #2a3a4a; /* Dark mode text */
+        }
+
+        /* Reset and base styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         html {
-            scroll-behavior: smooth;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
         }
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: #0a0a23;
-            color: #e5e5e5;
-            line-height: 1.6;
+            line-height: 1.8;
             overflow-x: hidden;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            transition: background 0.4s, color 0.4s, font-size 0.4s;
         }
         img {
             max-width: 100%;
             height: auto;
+            loading: lazy; /* Lazy-load images for performance */
         }
 
-        /* Starry Background (CSS Particles) */
-        .stars {
+        /* Font size classes for accessibility */
+        body.font-small { font-size: 14px; }
+        body.font-medium { font-size: 16px; }
+        body.font-large { font-size: 18px; }
+
+        /* Particle background styling */
+        #particles-js {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: -2;
             background: transparent;
-            z-index: -1;
+            transition: opacity 0.5s;
         }
-        .stars::before, .stars::after {
+        body.light-mode #particles-js {
+            opacity: 0; /* Hide particles in light mode for clarity */
+        }
+
+        /* Light mode styles */
+        body.light-mode {
+            background: var(--light-bg);
+            color: #1c2526;
+        }
+        body.light-mode header {
+            background: linear-gradient(180deg, rgba(70,130,255,0.95), transparent);
+            box-shadow: var(--shadow);
+        }
+        body.light-mode nav {
+            background: linear-gradient(90deg, #4a7bff, var(--primary));
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        body.light-mode .item {
+            background: rgba(255,255,255,0.98);
+            box-shadow: var(--shadow);
+        }
+        body.light-mode footer {
+            background: linear-gradient(90deg, #4a7bff, var(--primary));
+            color: #1c2526;
+        }
+        body.light-mode h2 {
+            color: #002d72;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        body.light-mode p, body.light-mode li {
+            color: var(--text-dark);
+        }
+        body.light-mode .section-toggle {
+            background: #e8f1ff;
+            color: #002d72;
+            border: 1px solid var(--primary);
+        }
+        body.light-mode a {
+            color: #004aad;
+        }
+        body.light-mode a:hover, body.light-mode a:focus {
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background: var(--dark-bg);
+            color: var(--text-light);
+        }
+        body.dark-mode header {
+            background: linear-gradient(180deg, rgba(0,0,60,0.95), transparent);
+            box-shadow: var(--shadow);
+        }
+        body.dark-mode nav {
+            background: linear-gradient(90deg, #1c2526, #2e3a4a);
+            box-shadow: 0 4px 12px rgba(0,0,255,0.3);
+        }
+        body.dark-mode .item {
+            background: rgba(255,255,255,0.15);
+            box-shadow: var(--shadow);
+        }
+        body.dark-mode .section-toggle {
+            background: rgba(255,255,255,0.15);
+            color: var(--primary);
+            border: 1px solid #5a7bff;
+        }
+        body.dark-mode a {
+            color: var(--primary);
+        }
+        body.dark-mode a:hover, body.dark-mode a:focus {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Header styling */
+        header {
+            text-align: center;
+            padding: 8em 1em;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 2.5s ease-in;
+        }
+        header::before {
             content: '';
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
-            background-size: 50px 50px;
-            will-change: opacity;
-        }
-        .stars::before {
-            animation: twinkle 5s infinite;
-        }
-        .stars::after {
-            animation: twinkle 7s infinite;
-            background-size: 30px 30px;
-            opacity: 0.5;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-
-        /* Header */
-        header {
-            background: linear-gradient(180deg, rgba(0,0,50,0.8), transparent);
-            text-align: center;
-            padding: 4em 1em;
-            animation: fadeIn 2s ease-in;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.25) 0%, transparent 60%);
+            opacity: 0.4;
+            z-index: -1;
         }
         header h1 {
-            font-size: 2.5em;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 4em;
             font-weight: 700;
             color: #fff;
-            text-shadow: 0 0 10px #00f;
-            margin-bottom: 0.3em;
+            text-shadow: 0 0 25px rgba(0,0,255,0.7);
+            margin-bottom: 0.6em;
+            animation: glow 4s infinite ease-in-out;
+            cursor: pointer; /* Indicates Easter egg */
         }
-        header p {
-            font-size: 1.2em;
-            color: #b3b3ff;
+        header p#typed-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5em;
+            color: var(--primary);
+            text-shadow: 0 0 8px rgba(0,0,255,0.4);
+            min-height: 2em; /* Prevents layout shift during typing */
+        }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 25px rgba(0,0,255,0.7); }
+            50% { text-shadow: 0 0 40px rgba(0,82,204,0.9); }
         }
 
-        /* Navigation */
+        /* Navigation styling */
         nav {
-            background: rgba(0,0,30,0.9);
-            padding: 1em 0;
+            padding: var(--spacing) 0;
             text-align: center;
             position: sticky;
             top: 0;
             z-index: 1000;
-            role: navigation;
-            aria-label: "Main navigation";
+            backdrop-filter: blur(5px);
         }
         nav a {
-            color: #b3b3ff;
-            margin: 0 1.5em;
+            color: var(--primary);
+            margin: 0 2.5em;
             text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            transition: color 0.3s, text-shadow 0.3s;
+            font-size: 1.2em;
+            transition: color 0.4s, transform 0.4s;
+            position: relative;
         }
-        nav a:hover {
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -6px;
+            left: 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.4s;
+        }
+        nav a:hover::after, nav a:focus::after {
+            width: 100%;
+        }
+        nav a:hover, nav a:focus {
             color: #fff;
-            text-shadow: 0 0 5px #00f;
+            transform: translateY(-3px);
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
         }
 
-        /* Theme Toggle */
-        .theme-toggle {
+        /* Controls styling (language, font size, theme, visitor count) */
+        .controls {
             position: fixed;
-            top: 1em;
-            right: 1em;
-            background: #00f;
-            color: #fff;
-            border: none;
-            padding: 0.5em 1em;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
+            top: 1.5em;
+            right: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 1.2em;
             z-index: 1000;
         }
-        body.light-mode {
-            background: #f0f0f5;
-            color: #333;
+        .language-selector select,
+        .font-size-selector select {
+            padding: 0.7em;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.2);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: border 0.4s, box-shadow 0.4s;
         }
-        body.light-mode header {
-            background: linear-gradient(180deg, rgba(50,50,255,0.8), transparent);
+        .language-selector select:focus,
+        .font-size-selector select:focus {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0,82,204,0.5);
+            outline: 3px solid var(--primary);
         }
-        body.light-mode nav {
-            background: rgba(50,50,255,0.9);
+        body.light-mode .language-selector select,
+        body.light-mode .font-size-selector select {
+            background: #fff;
+            color: #002d72;
+            border: 1px solid var(--primary);
         }
-        body.light-mode .stars {
+        .theme-toggle {
+            background: linear-gradient(45deg, #004aad, var(--primary));
+            color: #fff;
+            border: none;
+            padding: 0.8em 1.6em;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
+            transition: transform 0.4s, box-shadow 0.4s, scale 0.4s;
+        }
+        .theme-toggle:hover, .theme-toggle:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .viewer-count {
+            background: rgba(0,0,60,0.95);
+            color: var(--primary);
+            padding: 0.8em 1.6em;
+            border-radius: var(--radius);
+            font-size: 0.9em;
+            border: 1px solid #5a7bff;
+            transition: transform 0.4s;
+        }
+        body.light-mode .viewer-count {
+            background: rgba(255,255,255,0.98);
+            color: #002d72;
+            border: 1px solid var(--primary);
+        }
+
+        /* Scroll progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2em;
+            right: 2em;
+            background: linear-gradient(45deg, #004aad, var(--primary));
+            color: #fff;
+            padding: 1em 1.5em;
+            border-radius: 50%;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9em;
             display: none;
+            z-index: 1000;
+            transition: opacity 0.4s, transform 0.4s, scale 0.4s;
         }
-        body.light-mode .item {
-            background: rgba(0,0,50,0.05);
+        .back-to-top.show {
+            display: block;
+            opacity: 1;
         }
-        body.light-mode footer {
-            background: rgba(50,50,255,0.9);
-            color: #333;
-        }
-        body.light-mode h2 {
-            color: #0052cc;
-        }
-        body.light-mode p, body.light-mode li {
-            color: #333;
+        .back-to-top:hover, .back-to-top:focus {
+            transform: translateY(-5px) scale(1.1);
+            outline: 3px solid var(--primary);
         }
 
-        /* Container */
+        /* Main container */
         .container {
-            max-width: 1000px;
-            margin: 2em auto;
-            padding: 0 1.5em;
+            max-width: 1300px;
+            margin: 4em auto;
+            padding: 0 var(--spacing);
         }
 
-        /* Sections */
+        /* Section styling */
         section {
-            margin-bottom: 4em;
-            background: rgba(255,255,255,0.05);
-            padding: 2em;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,255,0.2);
-            animation: slideIn 1s ease-out;
+            margin-bottom: 7em;
+            background: rgba(255,255,255,0.1);
+            padding: 3.5em;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
         }
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0.3;
+            z-index: -1;
+        }
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Heading styles */
         h2 {
-            color: #b3b3ff;
-            border-bottom: 2px solid #00f;
-            padding-bottom: 0.3em;
-            font-size: 1.8em;
-            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+            border-bottom: 4px solid var(--primary);
+            padding-bottom: 0.6em;
+            font-size: 2.5em;
+            font-weight: 700;
+            position: relative;
+            transition: color 0.4s;
+        }
+        h2:hover {
+            color: var(--secondary);
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            bottom: -4px;
+            left: 0;
+            transition: width 0.4s;
+        }
+        h2:hover::after {
+            width: 120px;
         }
         p, li {
-            color: #e5e5e5;
-            line-height: 1.8;
-            margin-bottom: 1em;
+            color: var(--text-light);
+            line-height: 2.1;
+            margin-bottom: var(--spacing);
+        }
+        h3 {
+            font-family: 'Roboto Slab', serif;
+            font-size: 1.8em;
+            margin-bottom: 0.8em;
+            color: var(--secondary);
+        }
+        body.light-mode h3 {
+            color: #002d72;
         }
 
-        /* Grid Items */
-        .projects, .papers, .education, .hobbies {
+        /* Subsection toggles for My Life */
+        .subsection {
+            display: none;
+            margin-top: 2.5em;
+            padding: 2.5em;
+            background: rgba(255,255,255,0.18);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.5s ease-in;
+        }
+        .subsection.active {
+            display: block;
+        }
+        .section-toggle {
+            padding: 0.8em 1.8em;
+            margin: 0.8em;
+            background: rgba(255,255,255,0.18);
+            color: var(--primary);
+            border: 1px solid #5a7bff;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: background 0.4s, transform 0.4s, box-shadow 0.4s, scale 0.4s;
+        }
+        .section-toggle:hover, .section-toggle:focus {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
+        }
+        .section-toggle.active {
+            background: #004aad;
+            color: #fff;
+            box-shadow: var(--shadow);
+        }
+
+        /* Grid layouts for sections */
+        .papers, .research-experience, .hobbies, .my-life, .insights {
             display: grid;
-            gap: 2em;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3.5em;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
         }
         .item {
-            background: rgba(255,255,255,0.1);
-            padding: 1.5em;
-            border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            will-change: transform, box-shadow;
+            background: rgba(255,255,255,0.15);
+            padding: 3em;
+            border-radius: var(--radius);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,82,204,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+        .item:hover::before {
+            opacity: 1;
         }
         .item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 15px rgba(0,0,255,0.4);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow);
         }
         .item a {
-            color: #00f;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.4s;
         }
-        .item a:hover {
-            color: #66f;
+        .item a:hover, .item a:focus {
+            color: var(--secondary);
             text-decoration: underline;
+            outline: 3px solid var(--primary);
         }
 
-        /* Contact Form */
+        /* Timeline styling for projects and education */
+        .timeline {
+            position: relative;
+            padding: 2em 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            margin: 2em 0;
+            width: 50%;
+            padding: 1em 2em;
+            transition: transform 0.4s, box-shadow 0.4s;
+        }
+        .timeline-item:hover {
+            transform: scale(1.03);
+            box-shadow: var(--shadow);
+        }
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.5em;
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-item:nth-child(odd)::before {
+            right: -8px;
+        }
+        .timeline-item:nth-child(even)::before {
+            left: -8px;
+        }
+
+        /* Lightbox for astrophotography */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 1em;
+            right: 1em;
+            color: #fff;
+            font-size: 2em;
+            cursor: pointer;
+            transition: transform 0.4s;
+        }
+        .lightbox-close:hover, .lightbox-close:focus {
+            transform: scale(1.2);
+            outline: 3px solid var(--primary);
+        }
+
+        /* Contact form styling */
         form {
             display: grid;
-            gap: 1em;
-            max-width: 500px;
-            margin: 1em auto;
+            gap: var(--spacing);
+            max-width: 800px;
+            margin: 2.5em auto;
+        }
+        label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        body.light-mode label {
+            color: #002d72;
         }
         input, textarea {
-            padding: 0.7em;
-            border-radius: 5px;
-            border: 1px solid #b3b3ff;
-            background: rgba(255,255,255,0.1);
-            color: #e5e5e5;
+            padding: 1.2em;
+            border-radius: var(--radius);
+            border: 1px solid var(--primary);
+            background: rgba(255,255,255,0.2);
+            color: var(--text-light);
             font-family: 'Inter', sans-serif;
+            transition: border 0.4s, box-shadow 0.4s;
+        }
+        input:focus, textarea:focus {
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 12px rgba(0,82,204,0.6);
+            outline: 3px solid var(--primary);
         }
         textarea {
-            min-height: 120px;
+            min-height: 200px;
             resize: vertical;
         }
         button {
-            padding: 0.8em 1.5em;
-            background: #00f;
+            padding: 1.2em 2.5em;
+            background: linear-gradient(45deg, #004aad, var(--primary));
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: var(--radius);
             cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: transform 0.4s, box-shadow 0.4s, scale 0.4s;
         }
-        button:hover {
-            background: #66f;
+        button:hover, button:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
         }
 
-        /* CV Button */
+        /* CV button */
         .cv-button {
             display: inline-block;
-            padding: 0.8em 1.5em;
-            background: #00f;
+            padding: 1.2em 2.5em;
+            background: linear-gradient(45deg, #004aad, var(--primary));
             color: #fff;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: var(--radius);
+            font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            transition: background 0.3s;
+            transition: transform 0.4s, box-shadow 0.4s, scale 0.4s;
         }
-        .cv-button:hover {
-            background: #66f;
+        .cv-button:hover, .cv-button:focus {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: var(--shadow);
+            outline: 3px solid var(--primary);
         }
 
-        /* Footer */
+        /* Feedback widget */
+        .feedback-widget {
+            position: fixed;
+            bottom: 2em;
+            left: 2em;
+            background: rgba(255,255,255,0.15);
+            padding: 1em;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+        }
+        .feedback-widget p {
+            margin-bottom: 0.5em;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary);
+        }
+        .feedback-widget button {
+            padding: 0.5em 1em;
+            margin: 0 0.5em;
+        }
+        body.light-mode .feedback-widget {
+            background: rgba(255,255,255,0.98);
+        }
+        body.light-mode .feedback-widget p {
+            color: #002d72;
+        }
+
+        /* Badges for social/academic links */
+        .badges {
+            display: flex;
+            gap: 1em;
+            margin-top: 1em;
+            flex-wrap: wrap;
+        }
+
+        /* Footer styling */
         footer {
-            background: rgba(0,0,30,0.9);
+            background: linear-gradient(90deg, #1c2526, #2e3a4a);
             text-align: center;
-            padding: 2em 0;
-            color: #b3b3ff;
+            padding: 4em 0;
+            color: var(--primary);
+            position: relative;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at bottom, rgba(255,255,255,0.15) 0%, transparent 60%);
+            opacity: 0.4;
+            z-index: -1;
         }
         footer a {
-            color: #66f;
+            color: var(--primary);
             text-decoration: none;
         }
-        footer a:hover {
+        footer a:hover, footer a:focus {
+            color: var(--secondary);
             text-decoration: underline;
+            outline: 3px solid var(--primary);
         }
 
         /* Animations */
@@ -568,166 +722,602 @@
             to { opacity: 1; }
         }
         @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideUp {
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* Responsive Design */
+        /* Mobile-first responsive design */
         @media (max-width: 768px) {
-            header h1 { font-size: 2em; }
-            header p { font-size: 1em; }
-            nav a { display: block; margin: 0.8em 0; }
-            section { padding: 1.5em; }
-            .projects, .papers, .education, .hobbies { grid-template-columns: 1fr; }
+            header h1 { font-size: 3em; }
+            header p#typed-text { font-size: 1.3em; }
+            nav a { display: block; margin: 1.5em 0; font-size: 1.1em; }
+            section { padding: 3em; }
+            .papers, .research-experience, .hobbies, .my-life, .insights { grid-template-columns: 1fr; }
+            .controls { flex-direction: column; align-items: flex-end; gap: 1em; }
+            .container { padding: 0 2em; }
+            .back-to-top { bottom: 1.5em; right: 1.5em; }
+            .feedback-widget { bottom: 1.5em; left: 1.5em; }
+            .timeline::before { left: 20px; }
+            .timeline-item { width: 100%; left: 0; text-align: left; padding-left: 40px; }
+            .timeline-item::before { left: 12px; }
+            .badges { flex-direction: column; }
         }
         @media (max-width: 480px) {
-            header { padding: 2em 1em; }
-            .container { padding: 0 1em; }
-            h2 { font-size: 1.5em; }
+            header { padding: 5em 1em; }
+            header h1 { font-size: 2.2em; }
+            header p#typed-text { font-size: 1.1em; }
+            .container { padding: 0 1.8em; }
+            h2 { font-size: 2em; }
+            .controls { top: 0.8em; }
         }
     </style>
 </head>
-<body>
-    <div class="stars"></div>
-    <button class="theme-toggle" aria-label="Toggle light/dark theme">Toggle Theme</button>
-    <header>
+<body class="dark-mode font-medium">
+    <!-- Particle background container -->
+    <div id="particles-js" role="presentation" aria-hidden="true"></div>
+    <!-- Scroll progress bar -->
+    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <!-- Language selector -->
+    <div class="language-selector">
+        <select id="language" aria-label="Select language">
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="es">Español</option>
+            <option value="zh">中文</option>
+        </select>
+    </div>
+    <!-- Controls for theme, font size, and visitor count -->
+    <div class="controls">
+        <div class="font-size-selector">
+            <select id="font-size" aria-label="Select font size">
+                <option value="small">Small Font</option>
+                <option value="medium" selected>Medium Font</option>
+                <option value="large">Large Font</option>
+            </select>
+        </div>
+        <button class="theme-toggle" aria-label="Toggle light/dark theme">Light Mode</button>
+        <div class="viewer-count" aria-live="polite">Visitors: <span id="visitor-count">0</span></div>
+    </div>
+    <!-- Back to top button -->
+    <a href="#" class="back-to-top" aria-label="Back to top">↑ Top</a>
+    <!-- Feedback widget -->
+    <div class="feedback-widget" role="region" aria-label="Feedback widget">
+        <p>Was this page helpful?</p>
+        <button onclick="submitFeedback('yes')" aria-label="Yes, page is helpful">Yes</button>
+        <button onclick="submitFeedback('no')" aria-label="No, page is not helpful">No</button>
+    </div>
+    <!-- Lightbox for astrophotography -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-label="Image lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">&times;</span>
+        <img id="lightbox-image" src="" alt="Astrophotography image">
+    </div>
+    <!-- Header with typewriter effect -->
+    <header role="banner">
         <h1>Krishnanjan Sil</h1>
-        <p>Aspiring Theoretical Physicist | Unraveling the Universe’s Mysteries</p>
+        <p id="typed-text" aria-live="polite"></p>
     </header>
-    <nav>
+    <!-- Navigation menu -->
+    <nav role="navigation" aria-label="Main navigation">
         <a href="#about">About</a>
+        <a href="#my-life">My Life</a>
+        <a href="#research-experience">Research Experience</a>
         <a href="#research">Research Interests</a>
         <a href="#projects">Projects</a>
         <a href="#papers">Papers</a>
+        <a href="#insights">Insights</a>
         <a href="#education">Education</a>
         <a href="#hobbies">Hobbies</a>
         <a href="#cv">CV</a>
         <a href="#contact">Contact</a>
     </nav>
-    <div class="container">
-        <section id="about">
+    <main class="container" role="main">
+        <!-- About section -->
+        <section id="about" data-aos="fade-up">
             <h2>About Me</h2>
-            <p>Hi, I’m Krishnanjan Sil, a passionate theoretical physicist dedicated to exploring the fundamental laws of the universe. My fascination with the cosmos began as a child gazing at the stars, sparking a lifelong journey into quantum mechanics, cosmology, and particle physics. I strive to bridge theoretical insights with real-world data, contributing to our understanding of the universe’s deepest mysteries. When I’m not crunching equations, you’ll find me capturing the night sky or diving into science fiction.</p>
+            <p id="about-text">I’m Krishnanjan Sil, a theoretical physicist captivated by the universe’s deepest mysteries. From gazing at stars as a child to solving complex equations today, my journey is driven by a passion for quantum mechanics, cosmology, and particle physics. I aim to bridge theoretical models with empirical discoveries, pushing the boundaries of our cosmic understanding. When not immersed in research, I capture the night sky through astrophotography, dive into sci-fi novels, or hike to reflect on nature’s grandeur.</p>
         </section>
-        <section id="research">
+        <!-- My Life section with subsections -->
+        <section id="my-life" data-aos="fade-up">
+            <h2>My Life</h2>
+            <div class="subsection-toggles">
+                <button class="section-toggle active" data-section="why-physics" aria-controls="why-physics" aria-expanded="true">Why Physics?</button>
+                <button class="section-toggle" data-section="entrepreneurship" aria-controls="entrepreneurship" aria-expanded="false">Entrepreneurship Ideas</button>
+                <button class="section-toggle" data-section="musketeers" aria-controls="musketeers" aria-expanded="false">The 3 Musketeers</button>
+            </div>
+            <div class="subsection active" id="why-physics" aria-hidden="false">
+                <h3>Why Physics?</h3>
+                <p>Physics is the foundation of reality, a discipline that decodes the universe’s laws from quarks to quasars. My fascination began with a childhood telescope, revealing Jupiter’s moons and sparking a lifelong quest to understand cosmic phenomena. Physics blends mathematical elegance with empirical rigor, offering answers to profound questions about existence. My mission is to contribute to theories that reshape our view of the cosmos.</p>
+            </div>
+            <div class="subsection" id="entrepreneurship" aria-hidden="true">
+                <h3>Entrepreneurship Ideas</h3>
+                <p>I dream of merging physics with innovation. One vision is an open-source platform for quantum computing simulations, empowering students to explore quantum mechanics interactively. Another is a startup developing AI-driven cosmological models to accelerate discoveries in dark energy and galaxy formation. These ideas aim to make science accessible and transformative.</p>
+            </div>
+            <div class="subsection" id="musketeers" aria-hidden="true">
+                <h3>The 3 Musketeers: Experimental, Computational, and Theoretical Physics</h3>
+                <p>Physics thrives on three interconnected pillars. Experimental physics tests theories with data, like LIGO’s detection of gravitational waves. Computational physics models complex systems, such as galaxy evolution. Theoretical physics, my focus, crafts mathematical frameworks to predict phenomena like quantum entanglement. Their synergy drives scientific progress, and I’m passionate about contributing to all three.</p>
+            </div>
+        </section>
+        <!-- Research Experience section -->
+        <section id="research-experience" data-aos="fade-up">
+            <h2>Research Experience</h2>
+            <div class="research-experience">
+                <div class="item">
+                    <h3>Quantum Gravity Group, University of Example</h3>
+                    <p><strong>Research Assistant, June 2022 – August 2023</strong></p>
+                    <p>Collaborated with the Quantum Gravity Group to investigate quantum entanglement in curved spacetime. Developed Python-based simulations using Qiskit to model entanglement dynamics near black holes, contributing to a preprint (arXiv:2506.23681). Analyzed quantum information loss in high-curvature environments and presented findings at the 2023 International Physics Symposium, earning recognition for innovative methodologies.</p>
+                </div>
+                <div class="item">
+                    <h3>Cosmology and Astrophysics Lab, Institute of Advanced Studies</h3>
+                    <p><strong>Graduate Researcher, September 2024 – Present</strong></p>
+                    <p>Leading cosmological data analysis using Planck satellite data to constrain inflationary models. Developed machine learning algorithms with TensorFlow to detect patterns in CMB temperature fluctuations, improving predictions for dark energy models. Currently drafting a manuscript for submission to The Astrophysical Journal, focusing on baryon acoustic oscillations.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Research Interests section -->
+        <section id="research" data-aos="fade-up">
             <h2>Research Interests</h2>
+            <p>My research lies at the intersection of theoretical physics and observational data, aiming to unravel the universe’s fundamental mysteries through innovative approaches.</p>
             <ul>
-                <li><strong>Quantum Mechanics</strong>: Exploring quantum entanglement, superposition, and quantum information theory.</li>
-                <li><strong>Cosmology</strong>: Investigating the early universe, cosmic inflation, and dark energy.</li>
-                <li><strong>Particle Physics</strong>: Studying fundamental particles and their interactions in high-energy environments.</li>
-                <li><strong>General Relativity</strong>: Analyzing gravitational waves and black hole dynamics.</li>
+                <li><strong>Quantum Mechanics</strong>: I explore quantum entanglement and quantum information theory, simulating multi-qubit systems to study Bell state correlations. My work aims to advance quantum computing and understand decoherence in complex quantum systems.</li>
+                <li><strong>Cosmology</strong>: Focused on cosmic inflation and dark energy, I analyze CMB data to constrain inflationary parameters and investigate baryon acoustic oscillations to understand the universe’s early evolution.</li>
+                <li><strong>Particle Physics</strong>: Using Monte Carlo simulations, I model particle collisions to probe new physics, with a focus on neutrino oscillations and matter-antimatter asymmetry.</li>
+                <li><strong>General Relativity</strong>: I analyze LIGO gravitational wave data to study black hole dynamics and explore modified gravity theories to explain cosmic acceleration without dark energy.</li>
             </ul>
         </section>
-        <section id="projects">
+        <!-- Projects section with timeline -->
+        <section id="projects" data-aos="fade-up">
             <h2>Projects</h2>
-            <div class="projects">
-                <div class="item">
+            <div class="timeline">
+                <div class="timeline-item">
                     <h3>Quantum Entanglement Simulation</h3>
-                    <p>Built a Python-based simulation using Qiskit to model quantum entanglement, demonstrating Bell state generation and particle correlations.</p>
-                    <!-- Placeholder for screenshot: <img src="quantum-entanglement-screenshot.png" alt="Quantum entanglement simulation visualization"> -->
+                    <p><strong>2023</strong></p>
+                    <p>Developed a Qiskit-based Python simulation to model quantum entanglement, generating Bell states and analyzing particle correlations with statistical visualizations.</p>
                     <a href="https://github.com/krishnanjan/quantum-entanglement" target="_blank" rel="noopener">View on GitHub</a>
                 </div>
-                <div class="item">
+                <div class="timeline-item">
                     <h3>Cosmological Data Analysis</h3>
-                    <p>Analyzed CMB data from the Planck satellite to study early universe temperature fluctuations, with visualizations in Python/Matplotlib.</p>
-                    <!-- Placeholder for screenshot: <img src="cmb-analysis-screenshot.png" alt="CMB data visualization"> -->
+                    <p><strong>2024</strong></p>
+                    <p>Analyzed Planck satellite CMB data to study early universe temperature fluctuations, using Python/Matplotlib for power spectrum visualizations and cosmological parameter constraints.</p>
                     <a href="https://github.com/krishnanjan/cosmological-analysis" target="_blank" rel="noopener">View on GitHub</a>
                 </div>
-                <div class="item">
+                <div class="timeline-item">
                     <h3>Particle Physics Simulation</h3>
-                    <p>Developed a Monte Carlo simulation of particle collisions in a simplified LHC environment using C++ and ROOT, focusing on decay processes.</p>
-                    <!-- Placeholder for screenshot: <img src="particle-simulation-screenshot.png" alt="Particle collision simulation"> -->
+                    <p><strong>2024</strong></p>
+                    <p>Built a Monte Carlo simulation in C++ and ROOT to model particle collisions in a simplified LHC environment, focusing on decay processes and event reconstruction.</p>
                     <a href="https://github.com/krishnanjan/particle-simulation" target="_blank" rel="noopener">View on GitHub</a>
                 </div>
-                <div class="item">
+                <div class="timeline-item">
                     <h3>Gravitational Wave Analysis</h3>
-                    <p>Created a Python script to analyze LIGO gravitational wave signals, using Fourier transforms to identify waveform patterns.</p>
-                    <!-- Placeholder for screenshot: <img src="gravitational-wave-screenshot.png" alt="Gravitational wave signal analysis"> -->
+                    <p><strong>2025</strong></p>
+                    <p>Created a Python script to analyze LIGO gravitational wave signals, using Fourier transforms to identify waveform patterns and study binary system dynamics.</p>
                     <a href="https://github.com/krishnanjan/gravitational-waves" target="_blank" rel="noopener">View on GitHub</a>
                 </div>
             </div>
+            <!-- Interactive research demo -->
+            <div id="quantum-plot" style="margin-top: 2em;"></div>
         </section>
-        <section id="papers">
+        <!-- Papers section with dynamic arXiv feed -->
+        <section id="papers" data-aos="fade-up">
             <h2>Papers & Publications</h2>
-            <div class="papers">
+            <div class="papers" id="arxiv-feed">
                 <div class="item">
                     <h3>Entanglement in Multi-Qubit Systems</h3>
-                    <p>A theoretical study on scalable entanglement in multi-qubit systems. (Pending Publication)</p>
-                    <a href="#" target="_blank" rel="noopener">Preprint Coming Soon</a>
+                    <p>A theoretical study on scalable entanglement in multi-qubit systems for quantum computing applications.</p>
+                    <a href="https://arxiv.org/abs/2506.23681" target="_blank" rel="noopener">View on arXiv</a>
                 </div>
                 <div class="item">
                     <h3>Cosmic Inflation Models</h3>
-                    <p>A review of inflationary models and their implications for CMB observations. (Draft in Progress)</p>
+                    <p>A comprehensive review of inflationary models and their CMB implications, focusing on scalar field dynamics. (Draft in Progress)</p>
                     <a href="#" target="_blank" rel="noopener">Draft Coming Soon</a>
                 </div>
             </div>
+            <p>Explore my publications on <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener">Google Scholar</a>.</p>
         </section>
-        <section id="education">
-            <h2>Education</h2>
-            <div class="education">
+        <!-- Insights section with blog posts -->
+        <section id="insights" data-aos="fade-up">
+            <h2>Insights & Thoughts</h2>
+            <div class="insights">
                 <div class="item">
+                    <h3>How Gravitational Waves Changed My Research</h3>
+                    <p>A reflection on LIGO’s impact on cosmology and my work on quantum information theory. The detection of gravitational waves opened new avenues for testing general relativity...</p>
+                    <a href="/blog/gravitational-waves" target="_blank" rel="noopener">Read More</a>
+                </div>
+                <div class="item">
+                    <h3>Why Quantum Computing Excites Me</h3>
+                    <p>Exploring the potential of quantum computing to revolutionize physics simulations and solve complex problems in cosmology...</p>
+                    <a href="/blog/quantum-computing" target="_blank" rel="noopener">Read More</a>
+                </div>
+            </div>
+        </section>
+        <!-- Education section with timeline -->
+        <section id="education" data-aos="fade-up">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
                     <h3>B.Sc. in Physics</h3>
                     <p>University of Example, 2020–2024</p>
                     <p>Graduated with honors, specializing in theoretical physics. Thesis: "Quantum Entanglement in Spin Systems."</p>
                 </div>
-                <div class="item">
+                <div class="timeline-item">
                     <h3>M.Sc. in Theoretical Physics</h3>
                     <p>Institute of Advanced Studies, 2024–Present</p>
                     <p>Research focus: Cosmology and gravitational wave detection.</p>
                 </div>
             </div>
         </section>
-        <section id="hobbies">
+        <!-- Hobbies section with lightbox for astrophotography -->
+        <section id="hobbies" data-aos="fade-up">
             <h2>Hobbies</h2>
             <div class="hobbies">
                 <div class="item">
-                    <p><strong>Astrophotography</strong>: Capturing celestial objects with a telescope and DSLR camera.</p>
+                    <p><strong>Astrophotography</strong>: Capturing celestial wonders with a telescope and DSLR camera.</p>
+                    <div class="gallery">
+                        <img src="assets/astro1.jpg" alt="Jupiter captured through telescope" onclick="openLightbox('assets/astro1.jpg', 'Jupiter captured through telescope')" loading="lazy">
+                        <img src="assets/astro2.jpg" alt="Orion Nebula photograph" onclick="openLightbox('assets/astro2.jpg', 'Orion Nebula photograph')" loading="lazy">
+                    </div>
                 </div>
                 <div class="item">
-                    <p><strong>Science Fiction Reading</strong>: Drawing inspiration from Isaac Asimov and Arthur C. Clarke.</p>
+                    <p><strong>Science Fiction Reading</strong>: Inspired by the imaginative worlds of Isaac Asimov and Arthur C. Clarke.</p>
                 </div>
                 <div class="item">
-                    <p><strong>Coding</strong>: Building simulations and visualizations to support my physics research.</p>
+                    <p><strong>Coding</strong>: Developing simulations and visualizations to enhance physics research.</p>
                 </div>
                 <div class="item">
-                    <p><strong>Hiking</strong>: Reflecting on the universe’s grandeur in nature.</p>
+                    <p><strong>Hiking</strong>: Exploring nature to reflect on the universe’s vast beauty.</p>
                 </div>
             </div>
         </section>
-        <section id="cv">
+        <!-- CV section -->
+        <section id="cv" data-aos="fade-up">
             <h2>CV</h2>
-            <p>Download my full CV to explore my academic and research experience. (Link coming soon)</p>
-            <a href="#" class="cv-button">Download CV</a>
+            <p>Download my detailed CV to explore my academic and research journey.</p>
+            <a href="assets/cv.pdf" class="cv-button" download aria-label="Download Krishnanjan Sil's CV" onclick="checkCVLink(event)">Download CV</a>
         </section>
-        <section id="contact">
+        <!-- Contact section with enhanced form -->
+        <section id="contact" data-aos="fade-up">
             <h2>Contact</h2>
-            <p>Interested in discussing physics, research, or collaborations? Reach out!</p>
-            <form action="https://formspree.io/f/your-form-id" method="POST">
+            <p>Let’s connect to discuss physics, research collaborations, or innovative ideas!</p>
+            <form action="https://formspree.io/f/your-form-id" method="POST" aria-label="Contact form" onsubmit="return validateForm()">
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required aria-required="true">
+                <input type="text" id="name" name="name" required aria-required="true" placeholder="Your name">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required aria-required="true">
+                <input type="email" id="email" name="email" required aria-required="true" placeholder="Your email">
                 <label for="message">Message:</label>
-                <textarea id="message" name="message" required aria-required="true"></textarea>
+                <textarea id="message" name="message" required aria-required="true" placeholder="Your message"></textarea>
+                <input type="hidden" name="_gotcha" style="display:none !important">
                 <button type="submit">Send Message</button>
             </form>
             <p>Email: <a href="mailto:krishnanjan.sil@example.com">krishnanjan.sil@example.com</a></p>
-            <p>GitHub: <a href="https://github.com/krishnanjan" target="_blank" rel="noopener">github.com/krishnanjan</a></p>
-            <p>LinkedIn: <a href="https://linkedin.com/in/krishnanjan-sil" target="_blank" rel="noopener">linkedin.com/in/krishnanjan-sil</a></p>
-            <p>X: <a href="https://x.com/krishnanjan" target="_blank" rel="noopener">x.com/krishnanjan</a></p>
+            <div class="badges">
+                <a href="https://github.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/GitHub-krishnanjan-181717?style=flat-square&logo=github" alt="GitHub Profile"></a>
+                <a href="https://www.linkedin.com/in/krishnanjan-sil" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/LinkedIn-Krishnanjan%20Sil-0A66C2?style=flat-square&logo=linkedin" alt="LinkedIn Profile"></a>
+                <a href="https://x.com/krishnanjan" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/X-@krishnanjan-000000?style=flat-square&logo=x" alt="X Profile"></a>
+                <a href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/ORCID-0000--0000--0000--0000-a6ce39?style=flat-square&logo=orcid" alt="ORCID Profile"></a>
+                <a href="https://scholar.google.com/citations?user=your-google-scholar-id" target="_blank" rel="noopener"><img src="https://img.shields.io/badge/Google%20Scholar-Krishnanjan%20Sil-4285F4?style=flat-square&logo=google-scholar" alt="Google Scholar Profile"></a>
+            </div>
         </section>
-    </div>
-    <footer>
+    </main>
+    <!-- Footer -->
+    <footer role="contentinfo">
         <p>© 2025 Krishnanjan Sil. All rights reserved.</p>
         <p><a href="https://github.com/krishnanjan/krishnanjan.github.io" target="_blank" rel="noopener">View Source Code</a></p>
+        <!-- Note: Create sitemap.xml and robots.txt in your repo root for SEO -->
+        <!-- Example sitemap.xml: https://krishnanjan.github.io/sitemap.xml -->
+        <!-- Example robots.txt: https://krishnanjan.github.io/robots.txt -->
     </footer>
     <script>
-        // Theme Toggle
+        // Wait for window to load to ensure Particle.js is available
+        window.onload = function() {
+            // Initialize Particle.js only on larger screens
+            if (window.innerWidth > 768 && typeof particlesJS !== 'undefined') {
+                try {
+                    particlesJS('particles-js', {
+                        particles: {
+                            number: { value: 40, density: { enable: true, value_area: 1000 } }, // Reduced for performance
+                            color: { value: '#7ba3ff' },
+                            shape: { type: 'circle', stroke: { width: 0 } },
+                            opacity: { value: 0.5, random: true, anim: { enable: true, speed: 1, opacity_min: 0.1 } },
+                            size: { value: 3, random: true, anim: { enable: true, speed: 2, size_min: 0.1 } },
+                            line_linked: { enable: true, distance: 150, color: '#7ba3ff', opacity: 0.4, width: 1 },
+                            move: { enable: true, speed: 2, direction: 'none', random: true, straight: false, out_mode: 'out' }
+                        },
+                        interactivity: {
+                            detect_on: 'canvas',
+                            events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                            modes: { grab: { distance: 200, line_linked: { opacity: 0.5 } }, push: { particles_nb: 4 } }
+                        },
+                        retina_detect: true
+                    });
+                } catch (e) {
+                    console.warn('Particle.js initialization failed:', e);
+                }
+            }
+            // Initialize AOS for scroll animations
+            if (typeof AOS !== 'undefined') {
+                AOS.init({ duration: 1200, once: true });
+            }
+        };
+
+        // Auto-detect system theme preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches && !localStorage.getItem('theme')) {
+            document.body.classList.remove('dark-mode');
+            document.body.classList.add('light-mode');
+            document.querySelector('.theme-toggle').textContent = 'Dark Mode';
+        }
+
+        // Theme toggle functionality
         const toggleButton = document.querySelector('.theme-toggle');
         toggleButton.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
+            document.body.classList.toggle('dark-mode');
             toggleButton.textContent = document.body.classList.contains('light-mode') ? 'Dark Mode' : 'Light Mode';
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
         });
+
+        // Load saved theme
+        if (localStorage.getItem('theme')) {
+            document.body.classList.remove('light-mode', 'dark-mode');
+            document.body.classList.add(localStorage.getItem('theme') + '-mode');
+            toggleButton.textContent = localStorage.getItem('theme') === 'light' ? 'Dark Mode' : 'Light Mode';
+        }
+
+        // Language selector with translations
+        const translations = {
+            en: {
+                header: ["Theoretical Physicist", "Exploring Quantum Frontiers", "Cosmologist | Researcher | Innovator"],
+                about: "I’m Krishnanjan Sil, a theoretical physicist captivated by the universe’s deepest mysteries..."
+            },
+            fr: {
+                header: ["Physicien Théoricien", "Explorer les Frontières Quantiques", "Cosmologiste | Chercheur | Innovateur"],
+                about: "Je suis Krishnanjan Sil, un physicien théoricien fasciné par les mystères les plus profonds de l’univers..."
+            }
+            // Add more languages here (e.g., de, it, es, zh) with translations
+        };
+        const languageSelect = document.querySelector('#language');
+        let typedPhrases = translations.en.header;
+        languageSelect.addEventListener('change', (e) => {
+            const lang = e.target.value;
+            localStorage.setItem('language', lang);
+            typedPhrases = translations[lang]?.header || translations.en.header;
+            i = 0; j = 0; currentPhrase = []; isDeleting = false;
+            document.querySelector('#about-text').textContent = translations[lang]?.about || translations.en.about;
+        });
+        if (localStorage.getItem('language')) {
+            languageSelect.value = localStorage.getItem('language');
+            languageSelect.dispatchEvent(new Event('change'));
+        }
+
+        // Typewriter effect for header
+        let i = 0, j = 0, currentPhrase = [], isDeleting = false;
+        function typeLoop() {
+            document.getElementById('typed-text').innerHTML = currentPhrase.join('');
+            if (!isDeleting && j <= typedPhrases[i].length) {
+                currentPhrase.push(typedPhrases[i][j++]);
+            } else if (isDeleting && j > 0) {
+                currentPhrase.pop();
+                j--;
+            }
+            if (j === typedPhrases[i].length) isDeleting = true;
+            if (j === 0 && isDeleting) {
+                isDeleting = false;
+                i = (i + 1) % typedPhrases.length;
+            }
+            setTimeout(typeLoop, isDeleting ? 60 : 100);
+        }
+        typeLoop();
+
+        // Font size selector
+        const fontSizeSelect = document.querySelector('#font-size');
+        fontSizeSelect.addEventListener('change', (e) => {
+            document.body.classList.remove('font-small', 'font-medium', 'font-large');
+            document.body.classList.add(`font-${e.target.value}`);
+            localStorage.setItem('fontSize', e.target.value);
+        });
+        if (localStorage.getItem('fontSize')) {
+            fontSizeSelect.value = localStorage.getItem('fontSize');
+            fontSizeSelect.dispatchEvent(new Event('change'));
+        }
+
+        // Visitor counter (mock API)
+        async function updateVisitorCount() {
+            try {
+                const response = { count: parseInt(localStorage.getItem('visitorCount') || '0') + 1 };
+                localStorage.setItem('visitorCount', response.count);
+                document.getElementById('visitor-count').textContent = response.count;
+            } catch (error) {
+                console.error('Error updating visitor count:', error);
+            }
+        }
+        updateVisitorCount();
+
+        // Subsection toggles for My Life
+        const toggles = document.querySelectorAll('.section-toggle');
+        const subsections = document.querySelectorAll('.subsection');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const sectionId = toggle.getAttribute('data-section');
+                subsections.forEach(sub => {
+                    sub.classList.remove('active');
+                    sub.setAttribute('aria-hidden', 'true');
+                });
+                const activeSub = document.getElementById(sectionId);
+                activeSub.classList.add('active');
+                activeSub.setAttribute('aria-hidden', 'false');
+                toggles.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-expanded', 'false');
+                });
+                toggle.classList.add('active');
+                toggle.setAttribute('aria-expanded', 'true');
+            });
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle.click();
+                }
+            });
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            const progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = scrollPercent + '%';
+            progressBar.setAttribute('aria-valuenow', Math.round(scrollPercent));
+            document.querySelector('.back-to-top').classList.toggle('show', scrollTop > 300);
+        });
+
+        // Easter egg on header click
+        document.querySelector('header h1').addEventListener('click', () => {
+            alert("👨‍🔬 Fun Fact: My favorite equation is Schrödinger’s!");
+        });
+
+        // Lightbox functionality
+        function openLightbox(src, alt) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-image');
+            img.src = src;
+            img.alt = alt;
+            lightbox.classList.add('active');
+            lightbox.focus();
+        }
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+        }
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('lightbox') || e.target.classList.contains('lightbox-close')) {
+                closeLightbox();
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('lightbox').classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+
+        // Feedback widget functionality
+        function submitFeedback(response) {
+            localStorage.setItem('feedback', response);
+            alert(`Thank you for your feedback: ${response}`);
+            document.querySelector('.feedback-widget').style.display = 'none';
+        }
+
+        // Form validation
+        function validateForm() {
+            const honeypot = document.querySelector('input[name="_gotcha"]').value;
+            if (honeypot) {
+                alert('Spam detected!');
+                return false;
+            }
+            return true;
+        }
+
+        // CV link check
+        function checkCVLink(event) {
+            const link = event.target.href;
+            fetch(link, { method: 'HEAD' })
+                .catch(() => {
+                    event.preventDefault();
+                    alert('CV file is not available. Please contact me directly.');
+                });
+        }
+
+        // Interactive quantum entanglement plot with Plotly
+        if (typeof Plotly !== 'undefined') {
+            const x = Array.from({length: 100}, (_, i) => i / 10);
+            const y = x.map(t => Math.sin(t) * Math.exp(-0.1 * t)); // Mock entanglement data
+            Plotly.newPlot('quantum-plot', [{
+                x: x,
+                y: y,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Entanglement Correlation',
+                line: { color: '#7ba3ff' }
+            }], {
+                title: 'Quantum Entanglement Simulation (Mock Data)',
+                xaxis: { title: 'Time (s)' },
+                yaxis: { title: 'Correlation' },
+                margin: { t: 50 },
+                plot_bgcolor: 'transparent',
+                paper_bgcolor: 'transparent',
+                font: { color: document.body.classList.contains('light-mode') ? '#2a3a4a' : '#f5f6fa' }
+            });
+        }
+
+        // Mock arXiv feed
+        async function fetchArxivPapers() {
+            try {
+                // Mock response (replace with real arXiv API call if server-side available)
+                const mockResponse = [
+                    { title: 'Entanglement in Multi-Qubit Systems', link: 'https://arxiv.org/abs/2506.23681' },
+                    { title: 'Cosmic Inflation Models', link: '#' }
+                ];
+                const feed = document.getElementById('arxiv-feed');
+                feed.innerHTML = mockResponse.map(paper => `
+                    <div class="item">
+                        <h3>${paper.title}</h3>
+                        <p>${paper.title.includes('Inflation') ? 'A comprehensive review (Draft in Progress)' : 'A theoretical study on scalable entanglement.'}</p>
+                        <a href="${paper.link}" target="_blank" rel="noopener">${paper.link.includes('#') ? 'Draft Coming Soon' : 'View on arXiv'}</a>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error fetching arXiv papers:', error);
+                document.getElementById('arxiv-feed').innerHTML += '<p>Failed to load latest papers.</p>';
+            }
+        }
+        fetchArxivPapers();
+
+        // Structured data for SEO
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Krishnanjan Sil",
+            "jobTitle": "Theoretical Physicist",
+            "url": "https://krishnanjan.github.io",
+            "sameAs": [
+                "https://github.com/krishnanjan",
+                "https://www.linkedin.com/in/krishnanjan-sil",
+                "https://x.com/krishnanjan",
+                "https://orcid.org/0000-0000-0000-0000",
+                "https://scholar.google.com/citations?user=your-google-scholar-id"
+            ]
+        };
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+        // Keyboard navigation for nav links
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    link.click();
+                }
+            });
+        });
+
+        // Lazy-load sections with IntersectionObserver
+        const sections = document.querySelectorAll('section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(section => observer.observe(section));
     </script>
 </body>
 </html>
